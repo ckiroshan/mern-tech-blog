@@ -1,6 +1,12 @@
-import React from "react";
+import Header from "./components/Header";
 import "./App.css";
+import { Route, Routes } from "react-router-dom";
+import Layout from "./components/Layout";
 
 export default function App() {
-  return <div>Hello World</div>;
+  return (
+    <Routes>
+      <Route path={"/"} element={<Layout />}></Route>
+    </Routes>
+  );
 }
