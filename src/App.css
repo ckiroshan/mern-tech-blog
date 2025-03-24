@@ -1,3 +1,8 @@
+/* Default Styling */
+* {
+  box-sizing: border-box;
+}
+
 /* Basic Styling */
 body {
   color: #222;
