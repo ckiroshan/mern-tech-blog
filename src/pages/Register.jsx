@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { createUser } from "../service/api";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -6,11 +7,9 @@ const Register = () => {
 
   async function handleFormSubmit(e) {
     e.preventDefault();
-    await fetch(`http://localhost:8021/register`, {
-      method: "POST",
-      body: JSON.stringify({ username, password }),
-      headers: { "Content-Type": "application/json" },
-    });
+    const response = await createUser({ username, password });
+    if (response.status === 201) alert("Registration successful");
+    else alert("Registration failed");
   }
   return (
     <form className="register" onSubmit={handleFormSubmit}>
