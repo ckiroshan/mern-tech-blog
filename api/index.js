@@ -4,9 +4,10 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
+const client_URL = "http://localhost:5173";
 
 // Middleware
-app.use(cors());
+app.use(cors({ credentials: true, origin: client_URL }));
 app.use(express.json());
 
 // Database connection
