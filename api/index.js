@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 const client_URL = "http://localhost:5173";
@@ -9,6 +10,7 @@ const client_URL = "http://localhost:5173";
 // Middleware
 app.use(cors({ credentials: true, origin: client_URL }));
 app.use(express.json());
+app.use(cookieParser());
 
 // Database connection
 connectDB();
