@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { verifyUser } from "../service/api";
 import { Navigate } from "react-router-dom";
 
@@ -6,12 +6,17 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
+  const { userInfo, setUserInfo } = useContext(UserContext);
 
   async function handleFormSubmit(e) {
     e.preventDefault();
     const response = await verifyUser({ username, password });
-    if (response.status === 200) setRedirect(true);
-    else alert("Wrong Credentials, please try again!");
+    if (response.status === 200) {
+      response.json().then((userInfo) => {
+        setUserInfo(userInfo);
+        setRedirect(true);
+      });
+    } else alert("Wrong Credentials, please try again!");
   }
 
   if (redirect) return <Navigate to={"/"} />;
