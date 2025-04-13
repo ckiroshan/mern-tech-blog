@@ -37,3 +37,12 @@ export const login = async (req, res) => {
     res.status(400).json("Wrong Credentials");
   }
 };
+
+// Get User
+export const profile = (req, res) => {
+  const { token } = req.cookies;
+  jwt.verify(token, secretKey, {}, (err, info) => {
+    if (err) throw err;
+    res.json(info);
+  });
+};

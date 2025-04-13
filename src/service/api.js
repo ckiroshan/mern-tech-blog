@@ -9,7 +9,6 @@ export async function createUser(user) {
   return response;
 }
 
-
 export async function verifyUser(user) {
   const response = await fetch(`${API_URL}/auth/login`, {
     method: "POST",
@@ -18,4 +17,11 @@ export async function verifyUser(user) {
     credentials: "include",
   });
   return response;
+}
+
+export async function getProfile() {
+  const response = await fetch(`${API_URL}/auth/profile`, {
+    credentials: "include",
+  });
+  return response.json();
 }
