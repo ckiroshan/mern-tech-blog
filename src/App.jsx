@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { UserContextProvider } from "./service/UserContext";
+import CreatePost from "./pages/CreatePost";
 import "./App.css";
 
 export default function App() {
@@ -14,6 +15,7 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/add-post" element={<CreatePost />} />
         </Route>
       </Routes>
     </UserContextProvider>
