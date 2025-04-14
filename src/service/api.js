@@ -25,3 +25,11 @@ export async function getProfile() {
   });
   return response.json();
 }
+
+export async function logoutUser() {
+  const response = await fetch(`${API_URL}/auth/logout`, {
+    credentials: "include",
+    method: "POST",
+  });
+  return response;
+}

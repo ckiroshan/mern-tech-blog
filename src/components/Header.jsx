@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import React from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../service/UserContext";
-import { getProfile } from "../service/api";
+import { getProfile, logoutUser } from "../service/api";
 
 const Header = () => {
   const { userInfo, setUserInfo } = useContext(UserContext);
@@ -18,7 +18,16 @@ const Header = () => {
     }
     fetchProfile();
   }, []);
-  
+
+  async function logout() {
+    try {
+      await logoutUser();
+      setUserInfo(null);
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  }
+
   const username = userInfo?.username;
 
   return (

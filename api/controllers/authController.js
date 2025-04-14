@@ -46,3 +46,8 @@ export const profile = (req, res) => {
     res.json(info);
   });
 };
+
+// Log out
+export const logout = (req, res) => {
+  res.cookie("token", "").json("ok");
+};
