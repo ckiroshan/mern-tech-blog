@@ -5,6 +5,7 @@ dotenv.config({ path: "./.env" });
 
 // Fix Mongoose deprecation warning
 mongoose.set("strictQuery", false);
+mongoose.set("autoIndex", true);
 
 const connectDB = async () => {
   try {
