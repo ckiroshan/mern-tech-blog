@@ -33,3 +33,12 @@ export async function logoutUser() {
   });
   return response;
 }
+
+// Blog Posts =============>
+export async function addPost(postData) {
+  const response = await fetch(`${API_URL}/posts`, {
+    method: "POST",
+    body: postData,
+  });
+  return response;
+}
