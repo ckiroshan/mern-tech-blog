@@ -9,7 +9,12 @@ export const AddPost = async (req, res) => {
   const { originalname, path } = req.file;
   const parts = originalname.split(".");
   const ext = parts[parts.length - 1];
+
+  // Create new path with forward slashes
   const newPath = path + "." + ext;
+  const normalizedPath = newPath.replace(/\\/g, "/");
+
+  // Rename the file first
   fs.renameSync(path, newPath);
 
   const { token } = req.cookies;
@@ -20,7 +25,7 @@ export const AddPost = async (req, res) => {
       title,
       summary,
       content,
-      cover: newPath,
+      cover: normalizedPath,
       author: info.id,
     });
     res.json(postDoc);
