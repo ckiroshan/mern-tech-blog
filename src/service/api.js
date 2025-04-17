@@ -39,6 +39,7 @@ export async function addPost(postData) {
   const response = await fetch(`${API_URL}/posts`, {
     method: "POST",
     body: postData,
+    credentials: "include",
   });
   return response;
 }
