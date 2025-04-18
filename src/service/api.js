@@ -43,3 +43,8 @@ export async function addPost(postData) {
   });
   return response;
 }
+
+export async function fetchAllPosts() {
+  const response = await fetch(`${API_URL}/posts`);
+  return response.json();
+}

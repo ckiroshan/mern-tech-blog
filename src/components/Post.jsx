@@ -1,18 +1,20 @@
-const Post = () => {
+import { format } from "date-fns";
+
+const Post = ({ title, summary, content, cover, author, updatedAt }) => {
+  const formattedDate = format(new Date(updatedAt), "MMM d, yyyy HH:mm");
+
   return (
     <div className="post">
       <div className="image">
         <img src="./public/post.jpg" alt="" />
       </div>
       <div className="texts">
-        <h2>WhatsApp now has more than 3 billion users a month</h2>
+        <h2>{title}</h2>
         <p className="info">
-          <a className="author">David Paszko</a>
-          <time>2025-04-01 7:17 AM</time>
+          <a className="author">{author.username}</a>
+          <time>{formattedDate}</time>
         </p>
-        <p className="summary">
-          Founded in 2009 and acquired by Facebook for $19 billion in 2014, WhatsApp remains free to use and doesn’t serve any ads. The app reached the 2 billion monthly active user mark back in 2020, but... <strong>see more</strong>
-        </p>
+        <p className="summary">{summary}</p>
       </div>
     </div>
   );
