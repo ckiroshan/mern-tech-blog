@@ -52,7 +52,12 @@ div.post {
 
 div.post div.texts h2 {
   margin: 0;
-  font-size: 1.6rem;
+  font-size: 1.8 rem;
+}
+
+div.post div.texts a {
+  text-decoration: none;
+  color: inherit;
 }
 
 div.post p.info {
