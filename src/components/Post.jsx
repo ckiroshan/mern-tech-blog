@@ -6,7 +6,7 @@ const Post = ({ title, summary, content, cover, author, updatedAt }) => {
   return (
     <div className="post">
       <div className="image">
-        <img src="./public/post.jpg" alt="" />
+        <img src={`http://localhost:8021/api/${cover}`} alt="" />
       </div>
       <div className="texts">
         <h2>{title}</h2>
