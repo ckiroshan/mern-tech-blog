@@ -15,11 +15,11 @@ const Post = ({ _id, title, summary, content, cover, author, updatedAt }) => {
         <Link to={`/posts/${_id}`}>
           <h2>{title}</h2>
         </Link>
+        <p className="summary">{summary}</p>
         <p className="info">
-          <a className="author">{author.username}</a>
+          <a className="author">- {author.username}</a>
           <time>{formattedDate}</time>
         </p>
-        <p className="summary">{summary}</p>
       </div>
     </div>
   );
