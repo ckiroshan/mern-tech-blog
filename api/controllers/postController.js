@@ -36,3 +36,9 @@ export const AddPost = async (req, res) => {
 export const getAllPosts = async (req, res) => {
   res.json(await Post.find().populate("author", ["username"]).sort({ updatedAt: -1 }).limit(20));
 };
+
+// Get Post by ID
+export const getPost = async (req, res) => {
+  const { id } = req.params;
+  res.json(await Post.findById(id).populate("author", ["username"]));
+};
