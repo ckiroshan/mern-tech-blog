@@ -98,6 +98,50 @@ div.post p.summary {
   line-height: 1.4rem;
 }
 
+/* Post page styling */
+div.post-page div.post-image {
+  /* max-height: 200px; */
+  display: flex;
+  overflow: hidden;
+}
+
+div.post-page div.post-image img {
+  border-radius: 20px;
+  object-fit: cover;
+  object-position: center center;
+  /* width: 100%; */
+}
+
+div.post-page h1.post-heading {
+  text-align: center;
+  margin: 10px 0 5px;
+}
+
+div.post-page a {
+  color: #254b8b;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+div.post-page time {
+  text-align: center;
+  display: block;
+  color: #999;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+div.post-page div.author {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+div.post-page div.post-content p {
+  line-height: 1.6rem;
+}
+
 /* Login & Register section */
 form.login,
 form.register {
