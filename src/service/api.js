@@ -48,3 +48,8 @@ export async function fetchAllPosts() {
   const response = await fetch(`${API_URL}/posts`);
   return response.json();
 }
+
+export async function fetchPostById(id) {
+  const response = await fetch(`${API_URL}/posts/${id}`);
+  return response.json();
+}
