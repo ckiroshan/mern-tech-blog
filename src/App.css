@@ -1,11 +1,14 @@
 /* Default Styling */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Oswald:wght@200..700&family=Parkinsans:wght@300..800&display=swap");
+
 * {
   box-sizing: border-box;
+  font-family: "Montserrat", "Courier New", Courier, monospace;
 }
 
 /* Basic Styling */
 body {
-  color: #222;
+  color: #393939;
 }
 
 img {
@@ -33,8 +36,9 @@ header a {
 }
 
 header a.logo {
-  font-weight: bold;
+  font-weight: 800;
   font-size: 1.5rem;
+  letter-spacing: 2px;
 }
 
 header nav {

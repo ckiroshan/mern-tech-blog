@@ -33,7 +33,7 @@ const Header = () => {
   return (
     <header>
       <Link to="/" className="logo">
-        iBlog
+        iRO-BiTS
       </Link>
       <nav>
         {username && (
