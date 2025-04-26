@@ -42,3 +42,38 @@ export const getPost = async (req, res) => {
   const { id } = req.params;
   res.json(await Post.findById(id).populate("author", ["username"]));
 };
+
+// Update Post by ID
+export const modifyPost = async (req, res) => {
+  let newPath = null;
+  if (req.file) {
+    const { originalname, path } = req.file;
+    const parts = originalname.split(".");
+    const ext = parts[parts.length - 1];
+
+    // Create new path with forward slashes
+    newPath = path + "." + ext;
+
+    // Rename the file first
+    fs.renameSync(path, newPath);
+  }
+
+  const { token } = req.cookies;
+  jwt.verify(token, secretKey, {}, async (err, info) => {
+    if (err) throw err;
+    const { id, title, summary, content } = req.body;
+    const postDoc = await Post.findById(id);
+    const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(info.id);
+    if (!isAuthor) {
+      return res.status(400).json("You are not the author!");
+    }
+    await postDoc.update({
+      title,
+      summary,
+      content,
+      cover: newPath? newPath : postDoc.cover,
+      author: info.id,
+    });
+    res.json(postDoc);
+  });
+};
