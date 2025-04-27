@@ -4,8 +4,7 @@ import { UserContext } from "../service/UserContext";
 import { getProfile, logoutUser } from "../service/api";
 
 const Header = () => {
-  const { userInfo, setUserInfo } = useContext(UserContext);
-  const [searchQuery, setSearchQuery] = useState("");
+  const { userInfo, setUserInfo, searchQuery, setSearchQuery } = useContext(UserContext);
 
   useEffect(() => {
     async function fetchProfile() {
@@ -33,6 +32,10 @@ const Header = () => {
     console.log("Searching for:", searchQuery);
   };
 
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
   const username = userInfo?.username;
 
   return (
@@ -42,7 +45,7 @@ const Header = () => {
       </Link>
       <nav>
         <form className="search-form" onSubmit={handleSearch}>
-          <input type="text" placeholder="Search..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="search-input" />
+          <input type="text" placeholder="Search..." value={searchQuery} onChange={handleSearchChange} className="search-input" />
           <button type="submit" className="search-button">
             <SearchIcon />
           </button>
