@@ -184,18 +184,43 @@ div.post-page div.post-content p {
   line-height: 1.6rem;
 }
 
-/* Login & Register section */
-form.login,
-form.register {
-  max-width: 400px;
+/* ===== Login & Register Forms =====  */
+.form {
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  max-width: 500px;
   margin: 0 auto;
+  padding: 20px;
 }
 
-input {
+.form:hover {
+  transition: var(--transition-fast);
+}
+
+.form__input {
+  font-size: var(--text-base);
+  font-family: var(--font-base);
   display: block;
-  margin-bottom: 5px;
+  width: 96%;
+  padding: var(--space-xs);
+  border: 2px solid #ddd;
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-xs);
+}
+
+.form__button {
+  font-size: var(--text-base);
+  font-family: var(--font-base);
+  text-align: center;
+  cursor: pointer;
   width: 100%;
-  padding: 5px 7px;
+  padding: var(--space-sm) 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-secondary);
+  color: white;
+  margin-top: 5px;
+}
   border: 2px solid #ddd;
   border-radius: 5px;
   background-color: #fff;

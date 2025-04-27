@@ -26,12 +26,13 @@ const CreatePost = () => {
   }
   if (redirect) return <Navigate to={"/"} />;
   return (
-    <form onSubmit={handleFormSubmit}>
-      <input type="text" placeholder={"Title"} value={title} onChange={(e) => setTitle(e.target.value)} />
-      <input type="summary" placeholder={"Summary"} value={summary} onChange={(e) => setSummary(e.target.value)} />
-      <input type="file" onChange={(e) => setFiles(e.target.files)} />
+    <form onSubmit={handleFormSubmit} className="post__form">
+      Add commentMore actions
+      <input type="text" className="post__input" placeholder={"Title"} value={title} onChange={(e) => setTitle(e.target.value)} />
+      <input type="summary" className="post__input" placeholder={"Summary"} value={summary} onChange={(e) => setSummary(e.target.value)} />
+      <input type="file" className="post__input" onChange={(e) => setFiles(e.target.files)} />
       <Editor onChange={setContent} value={content} />
-      <button className="btn-post">Create Post</button>
+      <button className="form__button">Create Post</button>
     </form>
   );
 };
