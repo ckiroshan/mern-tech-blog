@@ -1,11 +1,11 @@
-import React, { useContext, useEffect } from "react";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../service/UserContext";
 import { getProfile, logoutUser } from "../service/api";
 
 const Header = () => {
   const { userInfo, setUserInfo } = useContext(UserContext);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     async function fetchProfile() {
@@ -28,6 +28,11 @@ const Header = () => {
     }
   }
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    console.log("Searching for:", searchQuery);
+  };
+
   const username = userInfo?.username;
 
   return (
@@ -36,6 +41,12 @@ const Header = () => {
         iRO-BiTS
       </Link>
       <nav>
+        <form className="search-form" onSubmit={handleSearch}>
+          <input type="text" placeholder="Search..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="search-input" />
+          <button type="submit" className="search-button">
+            <SearchIcon />
+          </button>
+        </form>
         {username && (
           <>
             <Link to="/add-post">Add new post</Link>
