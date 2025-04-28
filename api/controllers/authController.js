@@ -41,8 +41,15 @@ export const login = async (req, res) => {
 // Get User
 export const profile = (req, res) => {
   const { token } = req.cookies;
+  // Return null if no token exists
+  if (!token) {
+    return res.status(200).json(null);
+  }
   jwt.verify(token, secretKey, {}, (err, info) => {
-    if (err) throw err;
+    if (err) {
+      // Handle invalid/expired tokens
+      return res.status(200).json(null);
+    }
     res.json(info);
   });
 };

@@ -20,10 +20,21 @@ export async function verifyUser(user) {
 }
 
 export async function getProfile() {
-  const response = await fetch(`${API_URL}/auth/profile`, {
-    credentials: "include",
-  });
-  return response.json();
+  try {
+    const response = await fetch(`${API_URL}/auth/profile`, {
+      credentials: "include",
+    });
+    // Handle non-OK responses
+    if (!response.ok) {
+      return null;
+    }
+    // Handle empty responses
+    const text = await response.text();
+    return text ? JSON.parse(text) : null;
+  } catch (error) {
+    console.error("Profile fetch error:", error);
+    return null;
+  }
 }
 
 export async function logoutUser() {

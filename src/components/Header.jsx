@@ -10,9 +10,11 @@ const Header = () => {
     async function fetchProfile() {
       try {
         const userInfo = await getProfile();
-        setUserInfo(userInfo);
+        // Will be null if not authenticated
+        setUserInfo(userInfo || null);
       } catch (error) {
         console.error("Failed to fetch profile:", error);
+        setUserInfo(null);
       }
     }
     fetchProfile();
