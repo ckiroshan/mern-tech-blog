@@ -21,11 +21,11 @@ const Login = () => {
 
   if (redirect) return <Navigate to={"/"} />;
   return (
-    <form className="login" onSubmit={handleFormSubmit}>
+    <form className="form" onSubmit={handleFormSubmit}>
       <h1>Login</h1>
-      <input type="text" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-      <input type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      <button>Login</button>
+      <input type="text" className="form__input" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+      <input type="password" className="form__input" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <button className="form__button">Login</button>
     </form>
   );
 };

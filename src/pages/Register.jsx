@@ -12,11 +12,11 @@ const Register = () => {
     else alert("Registration failed");
   }
   return (
-    <form className="register" onSubmit={handleFormSubmit}>
+    <form className="form" onSubmit={handleFormSubmit}>
       <h1>Register</h1>
-      <input type="text" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-      <input type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      <button>Register</button>
+      <input type="text" className="form__input" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+      <input type="password" className="form__input" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <button className="form__button">Register</button>
     </form>
   );
 };
