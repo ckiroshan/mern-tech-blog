@@ -2,7 +2,7 @@ import { format } from "date-fns";
 import { Link } from "react-router-dom";
 
 const Post = ({ _id, title, summary, content, cover, author, updatedAt }) => {
-  const formattedDate = format(new Date(updatedAt), "MMM d, yyyy HH:mm");
+  const formattedDate = format(new Date(updatedAt), "MMM d, yyyy h:mm a");
 
   return (
     <div className="post">

@@ -29,7 +29,7 @@ const PostPage = () => {
   if (loading) return <Loader loading={loading} />;
   if (!postInfo) return <div className="no-results">Post not found</div>;
 
-  const formattedDate = format(new Date(postInfos.updatedAt), "MMM d, yyyy HH:mm");
+  const formattedDate = format(new Date(postInfo.updatedAt), "MMM d, yyyy h:mm a"); 
 
   return (
     <div className="post__page">
