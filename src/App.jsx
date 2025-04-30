@@ -7,6 +7,7 @@ import { UserContextProvider } from "./service/UserContext";
 import CreatePost from "./pages/CreatePost";
 import PostPage from "./pages/PostPage";
 import EditPost from "./pages/EditPost";
+import ProtectedRoute from "./components/routes/ProtectedRoute";
 import "./App.css";
 
 export default function App() {
@@ -14,12 +15,37 @@ export default function App() {
     <UserContextProvider>
       <Routes>
         <Route path={"/"} element={<Layout />}>
+          {/* Public routes */}
           <Route index element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/add-post" element={<CreatePost />} />
           <Route path="/posts/:id" element={<PostPage />} />
-          <Route path="/posts/edit/:id" element={<EditPost />} />
+
+          {/* Non-User only routes */}
+          <Route path="/login" element={
+              <ProtectedRoute requireAuth={false}>
+                <Login />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/register" element={
+              <ProtectedRoute requireAuth={false}>
+                <Register />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Auth User only routes */}
+          <Route path="/add-post" element={
+              <ProtectedRoute>
+                <CreatePost />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/posts/edit/:id" element={
+              <ProtectedRoute>
+                <EditPost />
+              </ProtectedRoute>
+            }
+          />
         </Route>
       </Routes>
     </UserContextProvider>
