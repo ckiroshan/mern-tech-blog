@@ -2,9 +2,15 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../service/UserContext";
 import { getProfile, logoutUser } from "../service/api";
+import PlusIcon from "./icons/PlusIcon";
+import HamburgerIcon from "./icons/HamburgerIcon";
+import UserIcon from "./icons/UserIcon";
+import LogoutIcon from "./icons/LogoutIcon";
+import SearchIcon from "./icons/SearchIcon";
 
 const Header = () => {
   const { userInfo, setUserInfo, searchQuery, setSearchQuery } = useContext(UserContext);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     async function fetchProfile() {
@@ -42,7 +48,7 @@ const Header = () => {
 
   return (
     <header>
-      <Link to="/" className="logo">
+      <Link to="/" className="header__logo">
         iRO-BiTS
       </Link>
       <nav>
@@ -54,14 +60,40 @@ const Header = () => {
         </form>
         {username && (
           <>
-            <Link to="/add-post">Add new post</Link>
-            <a onClick={logout}>Logout</a>
+            <Link className="nav-link" to="/add-post">
+              <PlusIcon />
+              Create Post
+            </Link>
+
+            <div className="user-menu">
+              <span className="username">Hey, {username}</span>
+              <button className="hamburger-btn" onClick={() => setDropdownOpen(!dropdownOpen)}>
+                <HamburgerIcon />
+              </button>
+
+              {dropdownOpen && (
+                <div className="dropdown">
+                  <div className="dropdown-item">
+                    <UserIcon />
+                    <span>My Profile</span>
+                  </div>
+                  <div className="dropdown-item" onClick={logout}>
+                    <LogoutIcon />
+                    <span>Logout</span>
+                  </div>
+                </div>
+              )}
+            </div>
           </>
         )}
         {!username && (
           <>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
+            <Link className="nav-link" to="/login">
+              Login
+            </Link>
+            <Link className="nav-link" to="/register">
+              Register
+            </Link>
           </>
         )}
       </nav>
