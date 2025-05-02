@@ -238,3 +238,39 @@ form.register h1 {
 form button.btn-post {
   margin-top: 5px;
 }
+
+/* ===== Post Create/Edit Forms =====  */
+.post__form {
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.post__input {
+  font-size: var(--text-base);
+  font-family: var(--font-base);
+  display: block;
+  width: 95.5%;
+  padding: var(--space-sm);
+  border: 2px solid #ddd;
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-xs);
+}
+
+.ql-toolbar.ql-snow {
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.ql-container.ql-snow {
+  font-size: var(--text-base);
+  font-family: var(--font-base);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  min-height: 150px;
+  margin-bottom: var(--space-xs);
+}
+
+.form h1 {
+  text-align: center;
+}
