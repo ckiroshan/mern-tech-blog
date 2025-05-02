@@ -221,6 +221,16 @@ div.post-page div.post-content p {
   margin-top: 5px;
 }
 
+h1.post__heading {
+  font-size: var(--text-lg);
+  text-align: center;
+  margin: var(--space-sm) 0 var(--space-xs);
+}
+
+h1.post__heading.post {
+  margin-top: -3.85rem;
+}
+
 button {
   width: 100%;
   display: block;

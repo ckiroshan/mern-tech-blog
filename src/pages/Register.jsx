@@ -13,7 +13,7 @@ const Register = () => {
   }
   return (
     <form className="form" onSubmit={handleFormSubmit}>
-      <h1>Register</h1>
+      <h1 className="post__heading">Register</h1>
       <input type="text" className="form__input" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} />
       <input type="password" className="form__input" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
       <button className="form__button">Register</button>

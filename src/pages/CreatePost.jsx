@@ -27,7 +27,7 @@ const CreatePost = () => {
   if (redirect) return <Navigate to={"/"} />;
   return (
     <form onSubmit={handleFormSubmit} className="post__form">
-      Add commentMore actions
+      <h1 className="post__heading">Add new post</h1>
       <input type="text" className="post__input" placeholder={"Title"} value={title} onChange={(e) => setTitle(e.target.value)} />
       <input type="summary" className="post__input" placeholder={"Summary"} value={summary} onChange={(e) => setSummary(e.target.value)} />
       <input type="file" className="post__input" onChange={(e) => setFiles(e.target.files)} />

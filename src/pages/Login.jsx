@@ -22,7 +22,7 @@ const Login = () => {
   if (redirect) return <Navigate to={"/"} />;
   return (
     <form className="form" onSubmit={handleFormSubmit}>
-      <h1>Login</h1>
+      <h1 className="post__heading">Login</h1>
       <input type="text" className="form__input" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} />
       <input type="password" className="form__input" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
       <button className="form__button">Login</button>
