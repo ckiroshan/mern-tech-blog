@@ -61,8 +61,8 @@ h2 {
 
 /* Header section */
 header {
-  display: grid;
-  grid-template-columns: auto 1fr;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   padding: var(--space-sm) var(--space-lg);
   margin: var(--space-xs);
@@ -73,13 +73,14 @@ header {
 
 .header__logo {
   font-weight: 800;
+  letter-spacing: 0.7px;
   font-size: var(--text-lg);
   color: var(--color-primary);
 }
 
 header nav {
   display: flex;
-  gap: 15px;
+  gap: var(--space-sm);
 }
 
 /* Post section */
