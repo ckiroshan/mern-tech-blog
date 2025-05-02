@@ -8,6 +8,7 @@ import CreatePost from "./pages/CreatePost";
 import PostPage from "./pages/PostPage";
 import EditPost from "./pages/EditPost";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
+import Contact from "./pages/Contact";
 import "./App.css";
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
           {/* Public routes */}
           <Route index element={<Home />} />
           <Route path="/posts/:id" element={<PostPage />} />
+          <Route path="/contact" element={<Contact />} />
 
           {/* Non-User only routes */}
           <Route path="/login" element={

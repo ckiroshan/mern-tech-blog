@@ -7,6 +7,7 @@ import HamburgerIcon from "./icons/HamburgerIcon";
 import UserIcon from "./icons/UserIcon";
 import LogoutIcon from "./icons/LogoutIcon";
 import SearchIcon from "./icons/SearchIcon";
+import { MdContactPhone } from "react-icons/md";
 
 const Header = () => {
   const { userInfo, setUserInfo, searchQuery, setSearchQuery } = useContext(UserContext);
@@ -103,6 +104,7 @@ const Header = () => {
           {/* Dropdown menu for mobile */}
           {dropdownOpen && (
             <div className="dropdown">
+              {/* For logged-in users on mobile */}
               {isMobile && username && (
                 <>
                   <Link className="dropdown-item" to="/add-post" onClick={() => setDropdownOpen(false)}>
@@ -112,6 +114,7 @@ const Header = () => {
                 </>
               )}
 
+              {/* For logged-out users on mobile */}
               {isMobile && !username && (
                 <>
                   <Link className="dropdown-item" to="/login" onClick={() => setDropdownOpen(false)}>
@@ -123,6 +126,7 @@ const Header = () => {
                 </>
               )}
 
+              {/* For logged-in users (all devices) */}
               {username && (
                 <>
                   <div className="dropdown-item">
@@ -134,6 +138,17 @@ const Header = () => {
                     <span>Logout</span>
                   </div>
                 </>
+              )}
+              {/* Contact Page */}
+              <Link className="dropdown-item" to="/contact" onClick={() => setDropdownOpen(false)}>
+                <MdContactPhone />
+                <span>Contact Us</span>
+              </Link>
+              {username && (
+                <div className="dropdown-item" onClick={logout}>
+                  <LogoutIcon />
+                  <span>Logout</span>
+                </div>
               )}
             </div>
           )}
