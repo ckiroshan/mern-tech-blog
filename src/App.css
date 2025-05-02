@@ -274,3 +274,18 @@ form button.btn-post {
 .form h1 {
   text-align: center;
 }
+
+/* Back button */
+.back__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: var(--transition-fast);
+  margin-bottom: 1rem;
+}
+
+.back__button:hover {
+  background-color: var(--color-primary);
+  color: white;
+  transform: translateX(-2px);
+}

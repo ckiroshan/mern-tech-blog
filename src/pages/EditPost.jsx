@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { fetchPostById, updatePost } from "../service/api";
 import Editor from "./Editor";
+import BackButton from "../components/BackButton";
 
 const EditPost = () => {
   const { id } = useParams();
@@ -38,7 +39,8 @@ const EditPost = () => {
   if (redirect) return <Navigate to={`/posts/${id}`} />;
   return (
     <form onSubmit={handleFormSubmit} className="post__form">
-      Add commentMore actions
+      <BackButton />
+      <h1 className="post__heading post">Edit Post</h1>
       <input type="text" className="post__input" placeholder={"Title"} value={title} onChange={(e) => setTitle(e.target.value)} />
       <input type="summary" className="post__input" placeholder={"Summary"} value={summary} onChange={(e) => setSummary(e.target.value)} />
       <input type="file" className="post__input" onChange={(e) => setFiles(e.target.files)} />

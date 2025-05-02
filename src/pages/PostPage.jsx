@@ -5,6 +5,7 @@ import { fetchPostById } from "../service/api";
 import { UserContext } from "../service/UserContext";
 import EditIcon from "../components/icons/EditIcon.jsx";
 import Loader from "../components/Loader";
+import BackButton from "../components/BackButton";
 
 const PostPage = () => {
   const [postInfo, setPostInfo] = useState(null);
@@ -33,7 +34,8 @@ const PostPage = () => {
 
   return (
     <div className="post__page">
-      <h1 className="post__heading">{postInfo.title}</h1>
+      <BackButton />
+      <h1 className="post__heading post">{postInfo.title}</h1>
       <time>{formattedDate}</time>
       <div className="post__author">By @{postInfo.author.username}</div>
       {userInfo && userInfo.id === postInfo.author._id && (
