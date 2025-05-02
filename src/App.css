@@ -300,3 +300,20 @@ form button.btn-post {
   color: white;
   transform: translateX(-2px);
 }
+
+/* Footer Styles */
+.footer {
+  background-color: white;
+  color: var(--color-primary);
+  text-align: center;
+  padding: var(--space-md) 0;
+  margin: 2rem auto 1rem;
+  width: 100%;
+  box-shadow: var(--shadow-sm);
+}
+
+.footer p {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
