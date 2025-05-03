@@ -7,16 +7,28 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
   const { userInfo, setUserInfo } = useContext(UserContext);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleFormSubmit(e) {
     e.preventDefault();
-    const response = await verifyUser({ username, password });
-    if (response.status === 200) {
-      response.json().then((userInfo) => {
+    setIsSubmitting(true);
+
+    try {
+      const response = await verifyUser({ username, password });
+
+      if (response.status === 200) {
+        const userInfo = await response.json();
         setUserInfo(userInfo);
         setRedirect(true);
-      });
-    } else alert("Wrong Credentials, please try again!");
+      } else {
+        alert("Wrong Credentials, please try again!");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("An error occurred during login");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   if (redirect) return <Navigate to={"/"} />;
@@ -25,7 +37,9 @@ const Login = () => {
       <h1 className="post__heading">Login</h1>
       <input type="text" className="form__input" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} />
       <input type="password" className="form__input" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      <button className="form__button">Login</button>
+      <button className="form__button" disabled={isSubmitting}>
+        {isSubmitting ? "Submitting..." : "Login"}
+      </button>
     </form>
   );
 };
