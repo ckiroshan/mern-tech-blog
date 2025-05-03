@@ -37,7 +37,7 @@ const PostPage = () => {
     <div className="post__page">
       <BackButton />
       <h1 className="post__heading post">{postInfo.title}</h1>
-      <time>{formattedDate}</time>
+      <time>Last updated on: {formattedDate}</time>
       <div className="post__author">By @{postInfo.author.username}</div>
       {userInfo && userInfo.id === postInfo.author._id && (
         <div className="edit-row">

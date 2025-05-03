@@ -17,6 +17,7 @@ const Post = ({ _id, title, summary, content, cover, author, updatedAt, categori
         </Link>
         <p className="summary">{summary}</p>
         <div className="categories">
+          <strong>Tags:</strong>
           {categories?.map((category) => (
             <span key={category} className="category-tag">
               {category}
@@ -25,6 +26,7 @@ const Post = ({ _id, title, summary, content, cover, author, updatedAt, categori
         </div>
         <p className="info">
           <a className="author">- {author.username}</a>
+          <time>Last updated on: {formattedDate}</time>
           <time>{formattedDate}</time>
         </p>
       </div>
