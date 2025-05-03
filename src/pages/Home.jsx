@@ -3,8 +3,8 @@ import Post from "../components/post";
 import { fetchAllPosts } from "../service/api";
 import { UserContext } from "../service/UserContext";
 import BackToTopButton from "../components/buttons/BackToTopButton";
-import Loader from "../components/Loader";
-import CategoryFilter from "../components/CategoryFilter";
+import Loader from "../components/buttons/Loader";
+import CategoryFilter from "../components/buttons/CategoryFilter";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);

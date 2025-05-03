@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { fetchPostById, updatePost } from "../service/api";
 import Editor from "./Editor";
-import BackButton from "../components/BackButton";
+import BackButton from "../components/buttons/BackButton";
 
 const EditPost = () => {
   const { id } = useParams();

@@ -5,8 +5,8 @@ import { fetchPostById } from "../service/api";
 import { UserContext } from "../service/UserContext";
 import EditIcon from "../components/icons/EditIcon.jsx";
 import BackToTopButton from "../components/buttons/BackToTopButton";
-import Loader from "../components/Loader";
-import BackButton from "../components/BackButton";
+import Loader from "../components/buttons/Loader";
+import BackButton from "../components/buttons/BackButton";
 
 const PostPage = () => {
   const [postInfo, setPostInfo] = useState(null);
