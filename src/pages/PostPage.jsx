@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { fetchPostById } from "../service/api";
 import { UserContext } from "../service/UserContext";
 import EditIcon from "../components/icons/EditIcon.jsx";
+import BackToTopButton from "../components/buttons/BackToTopButton";
 import Loader from "../components/Loader";
 import BackButton from "../components/BackButton";
 
@@ -50,6 +51,7 @@ const PostPage = () => {
         <img src={`http://localhost:8021/api/${postInfos.cover}`} alt="" />
       </div>
       <div className="post__content" dangerouslySetInnerHTML={{ __html: postInfos.content }}></div>
+      <BackToTopButton />
     </div>
   );
 };

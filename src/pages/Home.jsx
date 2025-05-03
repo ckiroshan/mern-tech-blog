@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Post from "../components/post";
 import { fetchAllPosts } from "../service/api";
 import { UserContext } from "../service/UserContext";
+import BackToTopButton from "../components/buttons/BackToTopButton";
 import Loader from "../components/Loader";
 import CategoryFilter from "../components/CategoryFilter";
 
@@ -38,7 +39,7 @@ const Home = () => {
   return (
     <>
       <CategoryFilter selectedCategory={selectedCategory} onCategoryChange={setSelectedCategory} />
-      {loading ? <Loader loading={loading} /> : filteredPosts.length > 0 ? filteredPosts.map((post) => <Post key={post._id} {...post} />) : <div className="no-results">{searchQuery ? "No posts match your search." : "No posts found."}</div>}
+      {loading ? <Loader loading={loading} /> : filteredPosts.length > 0 ? filteredPosts.map((post) => <Post key={post._id} {...post} />) : <div className="no-results">{searchQuery ? "No posts match your search." : "No posts found."}</div>} <BackToTopButton />
     </>
   );
 };
