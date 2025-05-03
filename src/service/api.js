@@ -55,8 +55,9 @@ export async function addPost(postData) {
   return response;
 }
 
-export async function fetchAllPosts() {
-  const response = await fetch(`${API_URL}/posts`);
+export async function fetchAllPosts(category = "") {
+  const url = category ? `${API_URL}/posts?category=${category}` : `${API_URL}/posts`;
+  const response = await fetch(url);
   return response.json();
 }
 

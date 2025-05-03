@@ -3,19 +3,29 @@ import Post from "../components/post";
 import { fetchAllPosts } from "../service/api";
 import { UserContext } from "../service/UserContext";
 import Loader from "../components/Loader";
+import CategoryFilter from "../components/CategoryFilter";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const { searchQuery } = useContext(UserContext);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const postsData = await fetchAllPosts();
+        setLoading(true);
+        const postsData = await fetchAllPosts(selectedCategory);
         setPosts(postsData);
-        setFilteredPosts(postsData);
+
+        // Apply filters immediately after loading
+        let filtered = [...postsData];
+        if (searchQuery) {
+          const lowerCaseQuery = searchQuery.toLowerCase();
+          filtered = filtered.filter((post) => post.title.toLowerCase().includes(lowerCaseQuery) || post.summary.toLowerCase().includes(lowerCaseQuery) || post.content.toLowerCase().includes(lowerCaseQuery) || post.author.username.toLowerCase().includes(lowerCaseQuery));
+        }
+        setFilteredPosts(filtered);
       } catch (error) {
         console.error("Error loading posts:", error);
       } finally {
@@ -23,27 +33,14 @@ const Home = () => {
       }
     };
     loadData();
-  }, []);
+  }, [selectedCategory, searchQuery]);
 
-  useEffect(() => {
-    if (!loading) {
-      if (searchQuery) {
-        const lowerCaseQuery = searchQuery.toLowerCase();
-        const filtered = posts.filter((post) => {
-          return post.title.toLowerCase().includes(lowerCaseQuery) || post.summary.toLowerCase().includes(lowerCaseQuery) || post.content.toLowerCase().includes(lowerCaseQuery) || post.author.username.toLowerCase().includes(lowerCaseQuery);
-        });
-        setFilteredPosts(filtered);
-      } else {
-        setFilteredPosts(posts);
-      }
-    }
-  }, [searchQuery, posts, loading]);
-
-  return <>
-  {filteredPosts.length > 0 ? filteredPosts.map((post) => 
-  <Post key={post._id} {...post} />) 
-  : loading ? <Loader loading={loading} /> 
-  : <div className="no-results">{searchQuery ? "No posts match your search." : "No posts found."}</div>}</>;
+  return (
+    <>
+      <CategoryFilter selectedCategory={selectedCategory} onCategoryChange={setSelectedCategory} />
+      {loading ? <Loader loading={loading} /> : filteredPosts.length > 0 ? filteredPosts.map((post) => <Post key={post._id} {...post} />) : <div className="no-results">{searchQuery ? "No posts match your search." : "No posts found."}</div>}
+    </>
+  );
 };
 
 export default Home;
