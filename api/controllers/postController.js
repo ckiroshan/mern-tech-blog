@@ -35,9 +35,21 @@ export const AddPost = async (req, res) => {
 
 // Get all posts
 export const getAllPosts = async (req, res) => {
-  const { category } = req.query;
+  const { category, page = 1, limit = 3 } = req.query;
   const filter = category ? { categories: category } : {};
-  res.json(await Post.find(filter).populate("author", ["username"]).sort({ updatedAt: -1 }));
+  const posts = await Post.find(filter)
+    .populate("author", ["username"])
+    .sort({ updatedAt: -1 })
+    .limit(limit * 1)
+    .skip((page - 1) * limit)
+    .exec();
+  const count = await Post.countDocuments(filter);
+  res.json({
+    posts,
+    totalPages: Math.ceil(count / limit),
+    currentPage: page,
+    totalPosts: count,
+  });
 };
 
 // Get Post by ID

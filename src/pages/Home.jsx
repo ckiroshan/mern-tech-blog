@@ -5,6 +5,7 @@ import { UserContext } from "../service/UserContext";
 import BackToTopButton from "../components/buttons/BackToTopButton";
 import Loader from "../components/buttons/Loader";
 import CategoryFilter from "../components/buttons/CategoryFilter";
+import Pagination from "../components/buttons/Pagination";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -12,13 +13,16 @@ const Home = () => {
   const { searchQuery } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true);
-        const postsData = await fetchAllPosts(selectedCategory);
+        const { posts: postsData, totalPages } = await fetchAllPosts(selectedCategory, currentPage);
         setPosts(postsData);
+        setTotalPages(totalPages);
 
         // Apply filters immediately after loading
         let filtered = [...postsData];
@@ -34,12 +38,29 @@ const Home = () => {
       }
     };
     loadData();
-  }, [selectedCategory, searchQuery]);
+  }, [selectedCategory, searchQuery, currentPage]);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <>
       <CategoryFilter selectedCategory={selectedCategory} onCategoryChange={setSelectedCategory} />
-      {loading ? <Loader loading={loading} /> : filteredPosts.length > 0 ? filteredPosts.map((post) => <Post key={post._id} {...post} />) : <div className="no-results">{searchQuery ? "No posts match your search." : "No posts found."}</div>} <BackToTopButton />
+      {loading ? (
+        <Loader loading={loading} />
+      ) : filteredPosts.length > 0 ? (
+        <>
+          {filteredPosts.map((post) => (
+            <Post key={post._id} {...post} />
+          ))}
+          <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+        </>
+      ) : (
+        <div className="no-results">{searchQuery ? "No posts match your search." : "No posts found."}</div>
+      )}
+      <BackToTopButton />
     </>
   );
 };
