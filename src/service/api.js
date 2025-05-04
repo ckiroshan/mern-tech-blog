@@ -37,7 +37,20 @@ export async function getProfile() {
   }
 }
 
+export async function updateUser(userData) {
+  const response = await fetch(`${API_URL}/auth/update`, {
+    method: "PUT",
+    body: JSON.stringify(userData),
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+  });
+  return response;
+}
+
 export async function logoutUser() {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("userInfo");
+  }
   const response = await fetch(`${API_URL}/auth/logout`, {
     credentials: "include",
     method: "POST",
