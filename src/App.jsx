@@ -9,6 +9,7 @@ import PostPage from "./pages/PostPage";
 import EditPost from "./pages/EditPost";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
 import Contact from "./pages/Contact";
+import MyProfile from "./pages/MyProfile";
 import "./App.css";
 
 export default function App() {
@@ -45,6 +46,12 @@ export default function App() {
           <Route path="/posts/edit/:id" element={
               <ProtectedRoute>
                 <EditPost />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/user/profile/:id" element={
+              <ProtectedRoute>
+                <MyProfile />
               </ProtectedRoute>
             }
           />

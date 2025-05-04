@@ -58,6 +58,7 @@ const Header = () => {
   };
 
   const username = userInfo?.username;
+  const id = userInfo?.id;
 
   return (
     <header>
@@ -129,10 +130,10 @@ const Header = () => {
               {/* For logged-in users (all devices) */}
               {username && (
                 <>
-                  <div className="dropdown-item">
+                  <Link className="dropdown-item" to={`/user/profile/${id}`} onClick={() => setDropdownOpen(false)}>
                     <UserIcon />
                     <span>My Profile</span>
-                  </div>
+                  </Link>
                   <div className="dropdown-item" onClick={logout}>
                     <LogoutIcon />
                     <span>Logout</span>
