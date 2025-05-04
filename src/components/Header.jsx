@@ -59,6 +59,7 @@ const Header = () => {
 
   const username = userInfo?.username;
   const id = userInfo?.id;
+  const Name = `${userInfo?.firstName} ${userInfo?.lastName}`;
 
   return (
     <header>
@@ -82,7 +83,7 @@ const Header = () => {
                 <PlusIcon />
                 Create Post
               </Link>
-              <span className="username">Hey, {username}</span>
+              <span className="username">Hola, {Name}!</span>
             </>
           )}
 
