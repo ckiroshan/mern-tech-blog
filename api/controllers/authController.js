@@ -37,6 +37,7 @@ export const login = async (req, res) => {
         firstName: userDoc.firstName,
         lastName: userDoc.lastName,
         email: userDoc.email,
+        updatedAt: userDoc.updatedAt,
       });
     });
   } else {
@@ -94,6 +95,7 @@ export const modifyUser = async (req, res) => {
     firstName: updatedUser.firstName,
     lastName: updatedUser.lastName,
     email: updatedUser.email,
+    updatedAt: userDoc.updatedAt,
   });
 };
 
