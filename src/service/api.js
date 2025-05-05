@@ -58,6 +58,11 @@ export async function logoutUser() {
   return response;
 }
 
+export async function fetchUserPosts(userId, page = 1, limit = 3) {
+  const response = await fetch(`${API_URL}/posts/user/${userId}?page=${page}&limit=${limit}`);
+  return response.json();
+}
+
 // Blog Posts =============>
 export async function addPost(postData) {
   const response = await fetch(`${API_URL}/posts`, {
