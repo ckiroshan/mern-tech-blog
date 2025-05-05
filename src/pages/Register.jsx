@@ -6,6 +6,9 @@ import { MdCheckCircle } from "react-icons/md";
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const navigate = useNavigate();
@@ -15,7 +18,7 @@ const Register = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await createUser({ username, password });
+      const response = await createUser({ firstName, lastName, email, username, password });
 
       if (response.status === 201) {
         setShowSuccess(true);
@@ -41,8 +44,11 @@ const Register = () => {
           <span>Registration successful! Redirecting to login...</span>
         </div>
       )}
-      <input type="text" className="form__input" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-      <input type="password" className="form__input" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <input type="text" className="form__input" placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+      <input type="text" className="form__input" placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+      <input type="text" className="form__input" placeholder="Email ID" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <input type="text" className="form__input" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
+      <input type="password" className="form__input" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
       <button className="form__button" disabled={isSubmitting} style={{ opacity: isSubmitting ? 0.7 : 1 }}>
         {isSubmitting ? "Submitting..." : "Register"}
       </button>
