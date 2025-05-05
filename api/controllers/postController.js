@@ -93,3 +93,29 @@ export const modifyPost = async (req, res) => {
     res.json(postDoc);
   });
 };
+
+// Get all Posts by User's ID
+export const getUserPosts = async (req, res) => {
+  try {
+    const { page = 1, limit = 3 } = req.query;
+    const { userId } = req.params;
+
+    const posts = await Post.find({ author: userId })
+      .populate("author", ["username"])
+      .sort({ updatedAt: -1 })
+      .limit(limit * 1)
+      .skip((page - 1) * limit)
+      .exec();
+
+    const count = await Post.countDocuments({ author: userId });
+
+    res.json({
+      posts,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+      totalPosts: count,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
