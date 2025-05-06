@@ -20,7 +20,8 @@ const PostSchema = new Schema(
         enum: categoryEnum
       }],
       validate: [arrayLimit, 'Maximum 3 categories allowed']
-    }
+    },
+    isApproved: { type: Boolean, default: false },
   },
   {
     timestamps: true,

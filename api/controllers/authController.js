@@ -37,6 +37,7 @@ export const login = async (req, res) => {
         firstName: userDoc.firstName,
         lastName: userDoc.lastName,
         email: userDoc.email,
+        isAdmin: userDoc.isAdmin,
         updatedAt: userDoc.updatedAt,
       });
     });
@@ -60,6 +61,7 @@ export const profile = async (req, res) => {
     firstName: userDoc.firstName,
     lastName: userDoc.lastName,
     email: userDoc.email,
+    isAdmin: userDoc.isAdmin,
     updatedAt: userDoc.updatedAt,
   });
 };
@@ -102,4 +104,17 @@ export const modifyUser = async (req, res) => {
 // Log out
 export const logout = (req, res) => {
   res.cookie("token", "").json("ok");
+};
+
+// Validate if User is Admin
+export const isAdmin = (req, res, next) => {
+  const { token } = req.cookies;
+  if (!token) return res.status(401).json("Not authenticated");
+  jwt.verify(token, secretKey, {}, async (err, info) => {
+    if (err) return res.status(403).json("Invalid token");
+    const user = await User.findById(info.id);
+    if (!user.isAdmin) return res.status(403).json("Admin access required");
+    req.user = user;
+    next();
+  });
 };
