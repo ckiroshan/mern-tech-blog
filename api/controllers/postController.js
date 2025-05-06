@@ -28,6 +28,7 @@ export const AddPost = async (req, res) => {
       cover: normalizedPath,
       author: info.id,
       categories: JSON.parse(categories),
+      isApproved: false,
     });
     res.json(postDoc);
   });
@@ -89,6 +90,7 @@ export const modifyPost = async (req, res) => {
       cover: newPath ? newPath : postDoc.cover,
       author: info.id,
       categories: JSON.parse(categories),
+      isApproved: false,
     });
     res.json(postDoc);
   });
