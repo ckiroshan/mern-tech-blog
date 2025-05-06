@@ -10,6 +10,7 @@ import EditPost from "./pages/EditPost";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
 import Contact from "./pages/Contact";
 import MyProfile from "./pages/MyProfile";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 import "./App.css";
 
 export default function App() {
@@ -52,6 +53,13 @@ export default function App() {
           <Route path="/user/profile/:id" element={
               <ProtectedRoute>
                 <MyProfile />
+              </ProtectedRoute>
+            }
+          />
+          {/* Admin only routes */}
+          <Route path="/user/admin" element={
+              <ProtectedRoute>
+                <AdminDashboard />
               </ProtectedRoute>
             }
           />

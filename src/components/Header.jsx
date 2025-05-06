@@ -8,6 +8,7 @@ import UserIcon from "./icons/UserIcon";
 import LogoutIcon from "./icons/LogoutIcon";
 import SearchIcon from "./icons/SearchIcon";
 import { MdContactPhone } from "react-icons/md";
+import AdminIcon from "./icons/AdminIcon";
 
 const Header = () => {
   const { userInfo, setUserInfo, searchQuery, setSearchQuery } = useContext(UserContext);
@@ -131,6 +132,13 @@ const Header = () => {
               {/* For logged-in users (all devices) */}
               {username && (
                 <>
+                  {/* Admin Dashboard (Admin only) */}
+                  {userInfo?.isAdmin && (
+                    <Link className="dropdown-item" to="/user/admin" onClick={() => setDropdownOpen(false)}>
+                      <AdminIcon />
+                      <span>Admin Dashboard</span>
+                    </Link>
+                  )}
                   <Link className="dropdown-item" to={`/user/profile/${id}`} onClick={() => setDropdownOpen(false)}>
                     <UserIcon />
                     <span>My Profile</span>
