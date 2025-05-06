@@ -36,7 +36,7 @@ export const AddPost = async (req, res) => {
 // Get all posts
 export const getAllPosts = async (req, res) => {
   const { category, page = 1, limit = 3 } = req.query;
-  const filter = category ? { categories: category } : {};
+  const filter = category ? { categories: category, isApproved: true } : { isApproved: true };
   const posts = await Post.find(filter)
     .populate("author", ["username"])
     .sort({ updatedAt: -1 })
@@ -118,4 +118,19 @@ export const getUserPosts = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
+};
+
+// Get all pending posts (admin only)
+export const getPendingPosts = async (req, res) => {
+  const posts = await Post.find({ isApproved: false }).populate("author", ["username"]);
+  res.json(posts);
+};
+
+// Approve/reject posts (admin only)
+export const moderatePost = async (req, res) => {
+  const { postId, action } = req.body;
+  // action: 'approve' or 'reject'
+  const update = action === "approve" ? { isApproved: true } : { isApproved: false };
+  const post = await Post.findByIdAndUpdate(postId, update, { new: true });
+  res.json(post);
 };
