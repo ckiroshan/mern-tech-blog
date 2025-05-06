@@ -92,3 +92,49 @@ export async function updatePost(postData) {
   });
   return response;
 }
+
+// Admin =============>
+export async function fetchAdminStats() {
+  const response = await fetch(`${API_URL}/admin/stats`, {
+    credentials: "include",
+  });
+  return response.json();
+}
+
+export async function fetchAllUsers() {
+  const response = await fetch(`${API_URL}/admin/users`, {
+    credentials: "include",
+  });
+  return response.json();
+}
+
+export async function fetchPendingPosts() {
+  const response = await fetch(`${API_URL}/admin/posts/pending`, {
+    credentials: "include",
+  });
+  return response.json();
+}
+
+export async function approvePost(postId) {
+  const response = await fetch(`${API_URL}/admin/posts/${postId}/approve`, {
+    method: "PUT",
+    credentials: "include",
+  });
+  return response.json();
+}
+
+export async function deletePost(postId) {
+  const response = await fetch(`${API_URL}/admin/posts/${postId}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+  return response.json();
+}
+
+export async function deleteUser(userId) {
+  const response = await fetch(`${API_URL}/admin/users/${userId}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+  return response.json();
+}

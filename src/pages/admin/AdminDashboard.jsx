@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../service/UserContext";
+import { format } from "date-fns";
+import { fetchAdminStats, fetchAllUsers, fetchPendingPosts, fetchAllPosts, approvePost, deletePost, deleteUser } from "../../service/api";
 import "./AdminDashboard.css";
 
 const AdminDashboard = () => {
@@ -12,7 +14,9 @@ const AdminDashboard = () => {
     pendingPosts: 0,
   });
   const [users, setUsers] = useState([]);
-  const [posts, setPosts] = useState([]);
+  const [pendingPosts, setPendingPosts] = useState([]);
+  const [allPosts, setAllPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Redirect if not admin
   useEffect(() => {
@@ -22,83 +26,82 @@ const AdminDashboard = () => {
     }
   }, [userInfo, navigate]);
 
-  // Load dummy data for testing
+  // Load real data from API
   useEffect(() => {
-    // Replace with actual API calls later
-    setStats({
-      totalUsers: 42,
-      totalPosts: 156,
-      pendingPosts: 8,
-    });
+    const loadData = async () => {
+      try {
+        setLoading(true);
 
-    setUsers([
-      { id: 1, firstName: "The", lastName: "Admin", username: "admin", email: "admin@example.com", posts: 12 },
-      { id: 2, firstName: "John", lastName: "Doe", username: "john_doe", email: "john@example.com", posts: 5 },
-      { id: 3, firstName: "Jane", lastName: "Smith", username: "jane_smith", email: "jane@example.com", posts: 8 },
-      { id: 4, firstName: "Tech", lastName: "Guy", username: "tech_guy", email: "tech@example.com", posts: 15 },
-    ]);
+        // Fetch all data in parallel
+        const [statsData, usersData, pendingData, allPostsData] = await Promise.all([fetchAdminStats(), fetchAllUsers(), fetchPendingPosts(), fetchAllPosts()]);
 
-    setPosts([
-      {
-        id: 1,
-        title: "React Hooks Guide",
-        author: "john_doe",
-        status: "approved",
-        createdAt: "2023-05-15",
-      },
-      {
-        id: 2,
-        title: "Node.js Best Practices",
-        author: "jane_smith",
-        status: "pending",
-        createdAt: "2023-05-16",
-      },
-      {
-        id: 3,
-        title: "MongoDB Optimization",
-        author: "tech_guy",
-        status: "pending",
-        createdAt: "2023-05-17",
-      },
-      {
-        id: 4,
-        title: "CSS Grid Tutorial",
-        author: "john_doe",
-        status: "approved",
-        createdAt: "2023-05-18",
-      },
-    ]);
+        setStats(statsData);
+        setUsers(usersData);
+        setPendingPosts(pendingData);
+        setAllPosts(allPostsData.posts || []);
+      } catch (error) {
+        console.error("Failed to load admin data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
   }, []);
 
-  const handleApprovePost = (postId) => {
-    // TODO: Implement API call
-    setPosts(posts.map((post) => (post.id === postId ? { ...post, status: "approved" } : post)));
-    setStats((prev) => ({
-      ...prev,
-      pendingPosts: prev.pendingPosts - 1,
-    }));
+  const handleApprovePost = async (postId) => {
+    try {
+      await approvePost(postId);
+      setPendingPosts(pendingPosts.filter((post) => post._id !== postId));
+      setAllPosts(allPosts.map((post) => (post._id === postId ? { ...post, isApproved: true } : post)));
+      setStats((prev) => ({
+        ...prev,
+        pendingPosts: prev.pendingPosts - 1,
+        totalPosts: prev.totalPosts,
+      }));
+    } catch (error) {
+      console.error("Failed to approve post:", error);
+    }
   };
 
-  const handleDeletePost = (postId) => {
-    // TODO: Implement API call
-    setPosts(posts.filter((post) => post.id !== postId));
-    setStats((prev) => ({
-      ...prev,
-      totalPosts: prev.totalPosts - 1,
-      pendingPosts: posts.find((p) => p.id === postId)?.status === "pending" ? prev.pendingPosts - 1 : prev.pendingPosts,
-    }));
+  const handleDeletePost = async (postId) => {
+    try {
+      await deletePost(postId);
+      const wasPending = pendingPosts.some((p) => p._id === postId);
+      setPendingPosts(pendingPosts.filter((post) => post._id !== postId));
+      setAllPosts(allPosts.filter((post) => post._id !== postId));
+      setStats((prev) => ({
+        ...prev,
+        totalPosts: prev.totalPosts - 1,
+        pendingPosts: wasPending ? prev.pendingPosts - 1 : prev.pendingPosts,
+      }));
+    } catch (error) {
+      console.error("Failed to delete post:", error);
+    }
   };
 
-  const handleDeleteUser = (userId) => {
-    // TODO: Implement API call
-    const userPosts = 5; // Would get this from API in real implementation
-    setUsers(users.filter((user) => user.id !== userId));
-    setStats((prev) => ({
-      ...prev,
-      totalUsers: prev.totalUsers - 1,
-      totalPosts: prev.totalPosts - userPosts,
-    }));
+  const handleDeleteUser = async (userId) => {
+    try {
+      const response = await deleteUser(userId);
+      const userPostCount = response.postsDeleted || 0;
+
+      setUsers(users.filter((user) => user._id !== userId));
+      setAllPosts(allPosts.filter((post) => post.author._id !== userId));
+      setStats((prev) => ({
+        ...prev,
+        totalUsers: prev.totalUsers - 1,
+        totalPosts: prev.totalPosts - userPostCount,
+      }));
+    } catch (error) {
+      console.error("Failed to delete user:", error);
+    }
   };
+
+  if (loading) {
+    return <div className="admin-loading">Loading admin data...</div>;
+  }
+
+  const formattedDate = format(new Date(userInfo.updatedAt), "MMM d, yyyy | h:mm a");
 
   return (
     <div className="admin-dashboard">
@@ -122,35 +125,52 @@ const AdminDashboard = () => {
 
       {/* Pending Posts Table */}
       <section className="admin-section">
-        <h2>Posts Awaiting Approval</h2>
+        <h2>Posts Awaiting Approval ({pendingPosts.length})</h2>
         <div className="table-container">
           <table>
             <thead>
               <tr>
                 <th>Title</th>
                 <th>Author</th>
-                <th>Date</th>
+                <th>Status</th>
+                <th>Last Date</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {posts
-                .filter((post) => post.status === "pending")
-                .map((post) => (
-                  <tr key={post.id}>
-                    <td>{post.title}</td>
-                    <td>{post.author}</td>
-                    <td>{post.createdAt}</td>
+              {pendingPosts.length > 0 ? (
+                pendingPosts.map((post) => (
+                  <tr key={post._id}>
+                    <td>
+                      <Link to={`/posts/${post._id}`}>{post.title}</Link>
+                    </td>
+                    <td>{post.author?.username || "Unknown"}</td>
+                    <td>
+                      <span className={`status-badge ${post.isApproved ? "approved" : "pending"}`}>{post.isApproved ? "Approved" : "Pending"}</span>
+                    </td>
+                    <td>{format(new Date(post.updatedAt), "MMM d, yyyy | h:mm a")}</td>
                     <td className="actions">
-                      <button className="approve-btn" onClick={() => handleApprovePost(post.id)}>
+                      <button className="approve-btn" onClick={() => handleApprovePost(post._id)}>
                         Approve
                       </button>
-                      <button className="delete-btn" onClick={() => handleDeletePost(post.id)}>
+                      <button>
+                        <Link className="edit-btn" to={`/posts/edit/${post._id}`} onClick={(e) => e.stopPropagation()}>
+                          Edit
+                        </Link>
+                      </button>
+                      <button className="delete-btn" onClick={() => handleDeletePost(post._id)}>
                         Delete
                       </button>
                     </td>
                   </tr>
-                ))}
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" className="no-posts">
+                    No posts pending approval
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
@@ -158,11 +178,12 @@ const AdminDashboard = () => {
 
       {/* All Users Table */}
       <section className="admin-section">
-        <h2>User Management</h2>
+        <h2>User Management ({users.length})</h2>
         <div className="table-container">
           <table>
             <thead>
               <tr>
+                <th>Joined</th>
                 <th>Full Name</th>
                 <th>Username</th>
                 <th>Email</th>
@@ -172,16 +193,19 @@ const AdminDashboard = () => {
             </thead>
             <tbody>
               {users.map((user) => (
-                <tr key={user.id}>
+                <tr key={user._id}>
+                  <td>{formattedDate}</td>
                   <td>{`${user.firstName} ${user.lastName}`}</td>
                   <td>{user.username}</td>
                   <td>{user.email}</td>
-                  <td>{user.posts}</td>
+                  <td>{user.postCount || 0}</td>
                   <td className="actions">
-                    <button className="approve-btn" onClick={() => handleDeleteUser(user.id)}>
-                      Edit
+                    <button>
+                      <Link className="edit-btn" to={`/admin/users/edit/${user._id}`} onClick={(e) => e.stopPropagation()}>
+                        Edit
+                      </Link>
                     </button>
-                    <button className="delete-btn" onClick={() => handleDeleteUser(user.id)}>
+                    <button className="delete-btn" onClick={() => handleDeleteUser(user._id)}>
                       Delete
                     </button>
                   </td>
@@ -192,37 +216,58 @@ const AdminDashboard = () => {
         </div>
       </section>
 
-      {/* Pending Posts Table */}
+      {/* Approved Posts Table */}
       <section className="admin-section">
-        <h2>Posts Management</h2>
+        <h2>Approved Posts ({allPosts.length})</h2>
         <div className="table-container">
           <table>
             <thead>
               <tr>
                 <th>Title</th>
                 <th>Author</th>
-                <th>Date</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Last Updated</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {posts
-                .filter((post) => post.status === "pending")
-                .map((post) => (
-                  <tr key={post.id}>
-                    <td>{post.title}</td>
-                    <td>{post.author}</td>
-                    <td>{post.createdAt}</td>
+              {allPosts.length > 0 ? (
+                allPosts.map((post) => (
+                  <tr key={post._id}>
+                    <td>
+                      <Link to={`/posts/${post._id}`}>{post.title}</Link>
+                    </td>
+                    <td>{post.author?.username || "Unknown"}</td>
+                    <td>
+                      <span className={`status-badge ${post.isApproved ? "approved" : "pending"}`}>{post.isApproved ? "Approved" : "Pending"}</span>
+                    </td>
+                    <td>{format(new Date(post.createdAt), "MMM d, yyyy")}</td>
+                    <td>{format(new Date(post.updatedAt), "MMM d, yyyy")}</td>
                     <td className="actions">
-                      <button className="approve-btn" onClick={() => handleApprovePost(post.id)}>
-                        Approve
+                      {!post.isApproved && (
+                        <button className="approve-btn" onClick={() => handleApprovePost(post._id)}>
+                          Approve
+                        </button>
+                      )}
+                      <button>
+                        <Link className="edit-btn" to={`/posts/edit/${post._id}`} onClick={(e) => e.stopPropagation()}>
+                          Edit
+                        </Link>
                       </button>
-                      <button className="delete-btn" onClick={() => handleDeletePost(post.id)}>
+                      <button className="delete-btn" onClick={() => handleDeletePost(post._id)}>
                         Delete
                       </button>
                     </td>
                   </tr>
-                ))}
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" className="no-posts">
+                    No posts found
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
