@@ -138,3 +138,22 @@ export async function deleteUser(userId) {
   });
   return response.json();
 }
+
+export async function getUserById(userId) {
+  const response = await fetch(`${API_URL}/admin/users/${userId}`, {
+    credentials: "include",
+  });
+  return response.json();
+}
+
+export async function updateUserById(userId, userData) {
+  const response = await fetch(`${API_URL}/admin/users/${userId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(userData),
+  });
+  return response.json();
+}

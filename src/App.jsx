@@ -11,6 +11,7 @@ import ProtectedRoute from "./components/routes/ProtectedRoute";
 import Contact from "./pages/Contact";
 import MyProfile from "./pages/MyProfile";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import EditUser from "./pages/admin/EditUser";
 import "./App.css";
 
 export default function App() {
@@ -60,6 +61,12 @@ export default function App() {
           <Route path="/user/admin" element={
               <ProtectedRoute>
                 <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/admin/users/edit/:userId" element={
+              <ProtectedRoute>
+                <EditUser />
               </ProtectedRoute>
             }
           />
