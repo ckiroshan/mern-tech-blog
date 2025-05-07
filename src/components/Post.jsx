@@ -8,7 +8,7 @@ const Post = ({ _id, title, summary, content, cover, author, updatedAt, categori
     <div className="post">
       <div className="image">
         <Link to={`/posts/${_id}`}>
-          <img src={`http://localhost:8021/api/${cover}`} alt="" />
+          <img src={cover} alt="" />
         </Link>
       </div>
       <div className="texts">
