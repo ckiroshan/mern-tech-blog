@@ -38,6 +38,7 @@ export const login = async (req, res) => {
         lastName: userDoc.lastName,
         email: userDoc.email,
         isAdmin: userDoc.isAdmin,
+        createdAt: userDoc.createdAt,
         updatedAt: userDoc.updatedAt,
       });
     });
@@ -62,6 +63,7 @@ export const profile = async (req, res) => {
     lastName: userDoc.lastName,
     email: userDoc.email,
     isAdmin: userDoc.isAdmin,
+    createdAt: userDoc.createdAt,
     updatedAt: userDoc.updatedAt,
   });
 };
@@ -97,6 +99,7 @@ export const modifyUser = async (req, res) => {
     firstName: updatedUser.firstName,
     lastName: updatedUser.lastName,
     email: updatedUser.email,
+    createdAt: updatedUser.createdAt,
     updatedAt: userDoc.updatedAt,
   });
 };

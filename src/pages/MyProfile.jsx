@@ -67,7 +67,7 @@ const MyProfile = () => {
     setCurrentPage(newPage);
   };
 
-  const formattedDate = format(new Date(userInfo.updatedAt), "MMM d, yyyy | h:mm a");
+  const formattedDate = format(new Date(userInfo.createdAt), "MMM d, yyyy | h:mm a");
 
   return (
     <div className="profile-container">
