@@ -18,7 +18,6 @@ const client_URL = "http://localhost:5173";
 app.use(cors({ credentials: true, origin: client_URL }));
 app.use(express.json());
 app.use(cookieParser());
-app.use("/api/uploads", express.static(join(__dirname, "uploads")));
 
 // Database connection
 connectDB();

@@ -1,6 +1,7 @@
 import fs from "fs";
 import Post from "../models/Post.js";
 import jwt from "jsonwebtoken";
+import { deleteFromS3, uploadToS3 } from "../config/s3Service.js";
 
 const secretKey = "jkhas!kd87&*2e#gjshghjsgd";
 
@@ -9,6 +10,13 @@ export const AddPost = async (req, res) => {
   const { originalname, path } = req.file;
   const parts = originalname.split(".");
   const ext = parts[parts.length - 1];
+  const newFileName = `${Date.now()}.${ext}`;
+
+  // Upload to S3
+  const s3Url = await uploadToS3(path, newFileName);
+
+  // Delete the local file
+  fs.unlinkSync(path);
 
   // Create new path with forward slashes
   const newPath = path + "." + ext;
@@ -25,7 +33,7 @@ export const AddPost = async (req, res) => {
       title,
       summary,
       content,
-      cover: normalizedPath,
+      cover: s3Url,
       author: info.id,
       categories: JSON.parse(categories),
       isApproved: false,
@@ -61,17 +69,17 @@ export const getPost = async (req, res) => {
 
 // Update Post by ID
 export const modifyPost = async (req, res) => {
-  let newPath = null;
+  let s3Url = null;
   if (req.file) {
     const { originalname, path } = req.file;
     const parts = originalname.split(".");
     const ext = parts[parts.length - 1];
 
-    // Create new path with forward slashes
-    newPath = path + "." + ext;
+    // Upload new file to S3
+    s3Url = await uploadToS3(path, newFileName);
 
-    // Rename the file first
-    fs.renameSync(path, newPath);
+    // Delete the local file
+    fs.unlinkSync(path);
   }
 
   const { token } = req.cookies;
@@ -83,11 +91,19 @@ export const modifyPost = async (req, res) => {
     if (!isAuthor) {
       return res.status(400).json("You are not the author!");
     }
+    // Delete old file from S3 if updating with new file
+    if (req.file && postDoc.cover) {
+      try {
+        await deleteFromS3(postDoc.cover);
+      } catch (err) {
+        console.error("Error deleting old file from S3:", err);
+      }
+    }
     await postDoc.update({
       title,
       summary,
       content,
-      cover: newPath ? newPath : postDoc.cover,
+      cover: s3Url || postDoc.cover,
       author: info.id,
       categories: JSON.parse(categories),
       isApproved: false,
