@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../service/UserContext";
-import { fetchAdminStats, fetchAllUsers, fetchPendingPosts, fetchAllPosts, approvePost, deletePost, deleteUser } from "../../service/api";
+import { fetchAdminStats, fetchAllUsers, fetchPendingPosts, fetchApprovedPosts, approvePost, deletePost, deleteUser } from "../../service/api";
 import AdminStats from "./components/AdminStatsCards";
 import PendingPostsTable from "./components/PendingPostsTable";
 import UsersTable from "./components/UsersTable";
@@ -35,7 +35,7 @@ const AdminDashboard = () => {
   const loadData = useCallback(async () => {
     try {
       setLoading(true);
-      const [statsData, usersData, pendingData, allPostsData] = await Promise.all([fetchAdminStats(), fetchAllUsers(), fetchPendingPosts(), fetchAllPosts()]);
+      const [statsData, usersData, pendingData, allPostsData] = await Promise.all([fetchAdminStats(), fetchAllUsers(), fetchPendingPosts(), fetchApprovedPosts()]);
 
       setStats(statsData);
       setUsers(usersData);

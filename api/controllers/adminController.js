@@ -34,6 +34,19 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
+export const getApprovedPosts = async (req, res) => {
+  try {
+    const posts = await Post.find({ isApproved: true })
+      .populate("author", ["username"])
+      .sort({ updatedAt: -1 })
+      .limit(20);
+
+    res.json({ posts });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 export const getPendingPosts = async (req, res) => {
   try {
     const posts = await Post.find({ isApproved: false }).populate("author", "username firstName lastName").sort({ createdAt: -1 });

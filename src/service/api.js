@@ -108,6 +108,13 @@ export async function fetchAllUsers() {
   return response.json();
 }
 
+export async function fetchApprovedPosts() {
+  const response = await fetch(`${API_URL}/admin/posts`, {
+    credentials: "include",
+  });
+  return response.json();
+}
+
 export async function fetchPendingPosts() {
   const response = await fetch(`${API_URL}/admin/posts/pending`, {
     credentials: "include",
