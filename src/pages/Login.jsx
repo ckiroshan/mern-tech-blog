@@ -17,8 +17,8 @@ const Login = () => {
       const response = await verifyUser({ username, password });
 
       if (response.status === 200) {
-        const userInfo = await response.json();
-        setUserInfo(userInfo);
+        const userData = await response.json();
+        setUserInfo(userData);
         setRedirect(true);
       } else {
         alert("Wrong Credentials, please try again!");
