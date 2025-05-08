@@ -29,7 +29,7 @@ export const login = async (req, res) => {
   const passOk = bcrypt.compareSync(password, userDoc.password); // Checks password
   if (passOk) {
     // Logged In
-    jwt.sign({ username, id: userDoc._id }, secretKey, {}, (err, token) => {
+    jwt.sign({ username, id: userDoc._id, isAdmin: userDoc.isAdmin }, secretKey, {}, (err, token) => {
       if (err) throw err;
       res.cookie("token", token).json({
         id: userDoc._id,
@@ -113,11 +113,10 @@ export const logout = (req, res) => {
 export const isAdmin = (req, res, next) => {
   const { token } = req.cookies;
   if (!token) return res.status(401).json("Not authenticated");
-  jwt.verify(token, secretKey, {}, async (err, info) => {
+  jwt.verify(token, secretKey, {}, (err, info) => {
     if (err) return res.status(403).json("Invalid token");
-    const user = await User.findById(info.id);
-    if (!user.isAdmin) return res.status(403).json("Admin access required");
-    req.user = user;
+    if (!info.isAdmin) return res.status(403).json("Admin access required");
+    req.user = { id: info.id, isAdmin: info.isAdmin };
     next();
   });
 };

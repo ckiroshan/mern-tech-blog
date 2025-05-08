@@ -87,8 +87,10 @@ export const modifyPost = async (req, res) => {
     if (err) throw err;
     const { id, title, summary, content, categories } = req.body;
     const postDoc = await Post.findById(id);
+    // Check if user is admin OR the author
+    const isAdmin = info.isAdmin;
     const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(info.id);
-    if (!isAuthor) {
+    if (!isAdmin && !isAuthor) {
       return res.status(400).json("You are not the author!");
     }
     // Delete old file from S3 if updating with new file
@@ -104,7 +106,7 @@ export const modifyPost = async (req, res) => {
       summary,
       content,
       cover: s3Url || postDoc.cover,
-      author: info.id,
+      author: isAdmin ? postDoc.author : info.id,
       categories: JSON.parse(categories),
       isApproved: false,
     });
