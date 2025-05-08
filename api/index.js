@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import db from "./config/db.js";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
@@ -19,8 +20,11 @@ app.use(cors({ credentials: true, origin: client_URL }));
 app.use(express.json());
 app.use(cookieParser());
 
-// Database connection
-connectDB();
+// Apply DB connection middleware globally
+app.use(db.connectionMiddleware());
+
+// Test endpoint (Check if connection status is OK first)
+app.get("/api/test-db", db.testConnectionHandler);
 
 // Routes
 app.use("/api/auth", authRoutes);
