@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createUser } from "../service/api";
+import { Link, useNavigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { MdCheckCircle } from "react-icons/md";
 
@@ -38,6 +39,7 @@ const Register = () => {
   return (
     <form className="form" onSubmit={handleFormSubmit}>
       <h1 className="post__heading">Register</h1>
+      <p className="contact-text">Fill & submit this form to create a new account.</p>
       {showSuccess && (
         <div className="alert alert-success">
           <MdCheckCircle size={20} />
@@ -50,8 +52,11 @@ const Register = () => {
       <input type="text" className="form__input" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
       <input type="password" className="form__input" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
       <button className="form__button" disabled={isSubmitting} style={{ opacity: isSubmitting ? 0.7 : 1 }}>
-        {isSubmitting ? "Submitting..." : "Register"}
+        {isSubmitting ? "Submitting..." : "Submit"}
       </button>
+      <p className="contact-text">
+        Already have an account? Login from <Link to={"/login"}>here</Link>.
+      </p>
     </form>
   );
 };

@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { verifyUser } from "../service/api";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -35,11 +35,17 @@ const Login = () => {
   return (
     <form className="form" onSubmit={handleFormSubmit}>
       <h1 className="post__heading">Login</h1>
+      <p className="contact-text">
+        Are you new here? please register from <Link to={"/register"}>here</Link>
+      </p>
       <input type="text" className="form__input" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} />
       <input type="password" className="form__input" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
       <button className="form__button" disabled={isSubmitting}>
-        {isSubmitting ? "Submitting..." : "Login"}
+        {isSubmitting ? "Submitting..." : "Submit"}
       </button>
+      <p className="contact-text">
+        Forgot password? Reach out to us from <Link to={"/contact"}>here</Link>, & you'll receive a temp password to login.
+      </p>
     </form>
   );
 };
