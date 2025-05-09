@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
+import { MdDone } from "react-icons/md";
 
 const UserPost = ({ post }) => {
   return (
@@ -19,6 +20,18 @@ const UserPost = ({ post }) => {
               {category}
             </span>
           ))}
+        </span>
+        <span className="post__status-group">
+          <span className={`approval-status ${post.isApproved ? "approved" : "pending"}`} data-tooltip={post.isApproved ? "This post is publicly visible" : "Waiting for admin approval"}>
+            {post.isApproved ? (
+              <>
+                <MdDone className="status-icon" />
+                <span>Approved</span>
+              </>
+            ) : (
+              <span>Pending Approval</span>
+            )}
+          </span>
         </span>
       </div>
     </div>
