@@ -5,13 +5,16 @@
 }
 
 .admin-dashboard h1 {
+  font-size: 2rem;
   text-align: center;
   margin-bottom: 2rem;
-  color: #2c3e50;
+  color: #856404;
 }
 
+/* Mobile-first styles (default) */
 .stats-container {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   margin-bottom: 3rem;
   gap: 1rem;
@@ -20,20 +23,24 @@
 .stat-card {
   flex: 1;
   background: #fff;
+  border-radius: 20px;
+  padding: 0rem;
   border-radius: 8px;
   padding: 1.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
+  margin: auto 0.6rem;
+  padding: 1rem;
 }
 
 .stat-card h3 {
-  color: #7f8c8d;
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
+  color: #2c3e50;
+  margin-bottom: 0rem;
+  font-size: 1.3rem;
 }
 
 .stat-card p {
-  font-size: 2rem;
+  font-size: 1.65rem;
   font-weight: bold;
   color: #2c3e50;
 }
@@ -45,8 +52,9 @@
 .admin-section h2 {
   color: #2c3e50;
   margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.7rem;
   border-bottom: 2px solid #ecf0f1;
+  font-size: 1.5rem;
 }
 
 .table-container {
@@ -63,9 +71,15 @@ table {
 
 th,
 td {
-  padding: 1rem;
+  padding: 0.75rem 0.5rem;
   text-align: left;
   border-bottom: 1px solid #ecf0f1;
+  font-size: 0.9rem;
+}
+
+.full-column {
+  min-width: 100px;
+  white-space: nowrap;
 }
 
 th {
@@ -80,17 +94,23 @@ th {
 }
 
 button {
-  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  padding-top: 0.4rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
   cursor: pointer;
   font-weight: 500;
   transition: all 0.2s;
 }
 
-.-btn {
-  background-color: #2ecc71;
+.edit-btn {
+  background-color: #ffcc34;
   color: white;
+}
+
+.approve-btn {
+  color: white;
+  background-color: #27ae60;
 }
 
 .approve-btn:hover {
@@ -106,14 +126,36 @@ button {
   background-color: #c0392b;
 }
 
-@media (max-width: 768px) {
+/* Desktop styles (800px and up) */
+@media screen and (min-width: 800px) {
+  .admin-dashboard h1 {
+    font-size: 2.5rem;
+  }
+
   .stats-container {
-    flex-direction: column;
+    flex-direction: row;
+  }
+
+  .stat-card {
+    padding: 1.2rem;
+    margin: auto;
+  }
+
+  .stat-card h3 {
+    font-size: 1.6rem;
+  }
+
+  .stat-card p {
+    font-size: 2rem;
+  }
+
+  .admin-section h2 {
+    font-size: 1.8rem;
   }
 
   th,
   td {
-    padding: 0.75rem 0.5rem;
-    font-size: 0.9rem;
+    padding: 1rem;
+    font-size: 1rem;
   }
 }
