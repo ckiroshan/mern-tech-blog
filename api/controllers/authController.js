@@ -25,25 +25,39 @@ export const register = async (req, res) => {
 // Login User
 export const login = async (req, res) => {
   const { username, password } = req.body;
-  const userDoc = await User.findOne({ username }); // Gets username
-  const passOk = bcrypt.compareSync(password, userDoc.password); // Checks password
-  if (passOk) {
+  try {
+    const userDoc = await User.findOne({ username }); // Gets username
+    if (!userDoc) return res.status(400).json("User not found");
+
+    const passOk = bcrypt.compareSync(password, userDoc.password); // Checks password
+    if (!passOk) return res.status(400).json("Wrong credentials");
+
     // Logged In
-    jwt.sign({ username, id: userDoc._id, isAdmin: userDoc.isAdmin }, secretKey, {}, (err, token) => {
-      if (err) throw err;
-      res.cookie("token", token).json({
-        id: userDoc._id,
-        username,
-        firstName: userDoc.firstName,
-        lastName: userDoc.lastName,
-        email: userDoc.email,
-        isAdmin: userDoc.isAdmin,
-        createdAt: userDoc.createdAt,
-        updatedAt: userDoc.updatedAt,
-      });
+    const token = jwt.sign({ username, id: userDoc._id, isAdmin: userDoc.isAdmin }, secretKey, { expiresIn: "1d" });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      domain: process.env.NODE_ENV === "production" ? ".irobits.netlify.app" : undefined,
+      path: "/",
+      maxAge: 86400000,
     });
-  } else {
-    res.status(400).json("Wrong Credentials");
+
+    const userData = {
+      id: userDoc._id,
+      username,
+      firstName: userDoc.firstName,
+      lastName: userDoc.lastName,
+      email: userDoc.email,
+      isAdmin: userDoc.isAdmin,
+      createdAt: userDoc.createdAt,
+    };
+
+    return res.json(userData);
+  } catch (err) {
+    console.error("Login error:", err);
+    return res.status(500).json("Server error");
   }
 };
 
@@ -106,7 +120,14 @@ export const modifyUser = async (req, res) => {
 
 // Log out
 export const logout = (req, res) => {
-  res.cookie("token", "").json("ok");
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    domain: process.env.NODE_ENV === "production" ? ".irobits.netlify.app" : undefined,
+    path: "/",
+  });
+  return res.json("ok");
 };
 
 // Validate if User is Admin
