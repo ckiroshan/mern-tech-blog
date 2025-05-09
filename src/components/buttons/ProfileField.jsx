@@ -37,27 +37,26 @@ const ProfileField = ({ label, value, editable = false, password = false, fieldN
   };
 
   return (
-    <div className="profile-field">
-      <span className="field-label">{label}:</span>
-
+    <div className="profile__field">
+      <span className="field__label">{label}:</span>
       {isEditing ? (
-        <div className="edit-field-group">
-          <input type={password ? "password" : "text"} value={fieldValue} onChange={(e) => setFieldValue(e.target.value)} className="field-input" disabled={isUpdating} />
-          <div className="edit-controls">
-            <button onClick={handleSave} className="control-button save" disabled={isUpdating}>
+        <div className="edit__field__group">
+          <input type={password ? "password" : "text"} value={fieldValue} onChange={(e) => setFieldValue(e.target.value)} className="field__input" disabled={isUpdating} />
+          <div className="edit__controls">
+            <button onClick={handleSave} className="control__button save" disabled={isUpdating}>
               ✓
             </button>
-            <button onClick={handleCancel} className="control-button cancel" disabled={isUpdating}>
+            <button onClick={handleCancel} className="control__button cancel" disabled={isUpdating}>
               ✕
             </button>
           </div>
-          {error && <div className="field-error">{error}</div>}
+          {error && <div className="field__error">{error}</div>}
         </div>
       ) : (
-        <div className="field-value-group">
-          <span className="field-value">{password ? "•".repeat(6) : fieldValue}</span>
+        <div className="field__value__group">
+          <span className="field__value">{password ? "•".repeat(6) : fieldValue}</span>
           {editable && (
-            <button onClick={handleEdit} className="edit-button" disabled={isUpdating}>
+            <button onClick={handleEdit} className="edit__button" disabled={isUpdating}>
               ✎
             </button>
           )}

@@ -3,19 +3,19 @@ import { format } from "date-fns";
 
 const UserPost = ({ post }) => {
   return (
-    <div className="user-post">
-      <div className="post-header">
-        <h3 className="post-title">
+    <div className="user__post">
+      <div className="post__header">
+        <h3 className="post__title">
           <Link to={`/posts/${post._id}`}>{post.title}</Link>
         </h3>
-        <time className="post-date">{format(new Date(post.updatedAt), "MMM d, yyyy | h:mm a")}</time>
+        <time className="post__date">{format(new Date(post.updatedAt), "MMM d, yyyy | h:mm a")}</time>
       </div>
-      <div className="post-content-preview">{post.summary || "No summary available"}</div>
-      <div className="post-footer">
-        <span className="post-categories">
+      <div className="post__content__preview">{post.summary || "No summary available"}</div>
+      <div className="post__footer">
+        <span className="post__categories">
           Tags:
           {post.categories?.map((category) => (
-            <span key={category} className="category-tag">
+            <span key={category} className="category__tag">
               {category}
             </span>
           ))}

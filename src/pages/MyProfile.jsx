@@ -70,12 +70,12 @@ const MyProfile = () => {
   const formattedDate = format(new Date(userInfo.createdAt), "MMM d, yyyy | h:mm a");
 
   return (
-    <div className="profile-container">
-      <div className="profile-section">
-        <div className="profile-header">
-          <h2 className="profile-title">My Info</h2>
+    <div className="profile__container">
+      <div className="profile__section">
+        <div className="profile__header">
+          <h2 className="profile__title">My Info</h2>
         </div>
-        <div className="profile-details">
+        <div className="profile__details">
           <ProfileField label="Joined" value={formattedDate} />
           <ProfileField label="Email" value={userInfo?.email || ""} />
           <ProfileField label="Username" value={userInfo?.username || ""} />
@@ -84,20 +84,19 @@ const MyProfile = () => {
           <ProfileField label="Last Name" value={userInfo?.lastName || ""} editable fieldName="lastName" onSave={handleUpdate} isUpdating={isUpdating} />
         </div>
       </div>
-
-      <div className="posts-section">
-        <div className="profile-header">
-          <h2 className="profile-title">My Posts</h2>
+      <div className="posts__section">
+        <div className="profile__header">
+          <h2 className="profile__title">My Posts</h2>
           {userPosts.length > 0 && <PostPagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />}
         </div>
         {isLoadingPosts ? (
-          <div className="loading-text">Loading posts...</div>
+          <div className="loading__text">Loading posts...</div>
         ) : userPosts.length > 0 ? (
           userPosts.map((post) => <UserPost key={post._id} post={post} />)
         ) : (
-          <div className="no-posts">
+          <div className="no__posts">
             <p>No posts created yet</p>
-            <Link to="/add-post" className="create-post-link">
+            <Link to="/add-post" className="create__post__link">
               Create your first post
             </Link>
           </div>

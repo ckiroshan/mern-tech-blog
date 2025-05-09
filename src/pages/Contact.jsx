@@ -52,6 +52,8 @@ const Contact = () => {
         <h1 className="post__heading">Contact Us</h1>
         <p className="contact-text">If you gave any queries regarding this site, feel free to submit this form.</p>
         <form id="contact-form" className="form" onSubmit={handleSubmit(onSubmit)} noValidate>
+          <h1 className="post__heading">Contact Us</h1>
+          <p className="contact-text">If you have any queries regarding this site, feel free to submit this form.</p>
           <input
             type="text"
             name="name"
@@ -65,7 +67,7 @@ const Contact = () => {
                 message: "Please use 30 characters or less",
               },
             })}
-            className="post__input"
+            className="form__input"
             placeholder="Name"
           ></input>
           {errors.name && <span className="errorMessage">{errors.name.message}</span>}
@@ -76,7 +78,7 @@ const Contact = () => {
               required: true,
               pattern: /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
             })}
-            className="post__input"
+            className="form__input"
             placeholder="Email address"
           ></input>
           {errors.email && <span className="errorMessage">Please enter a valid email address</span>}
@@ -93,7 +95,7 @@ const Contact = () => {
                 message: "Subject cannot exceed 75 characters",
               },
             })}
-            className="post__input"
+            className="form__input"
             placeholder="Subject"
           ></input>
           {errors.subject && <span className="errorMessage">{errors.subject.message}</span>}
@@ -103,7 +105,7 @@ const Contact = () => {
             {...register("message", {
               required: true,
             })}
-            className="post__input"
+            className="form__input"
             placeholder="Message"
           ></textarea>
           {errors.message && <span className="errorMessage">Please enter a message</span>}

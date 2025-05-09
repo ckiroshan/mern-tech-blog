@@ -58,9 +58,9 @@ const EditPost = () => {
       <input type="text" className="post__input" placeholder={"Title"} value={title} onChange={(e) => setTitle(e.target.value)} />
       <input type="summary" className="post__input" placeholder={"Summary"} value={summary} onChange={(e) => setSummary(e.target.value)} />
       <input type="file" className="post__input" onChange={(e) => setFiles(e.target.files)} />
-      <div className="category-selection">
+      <div className="category__selection">
         <h3>Select Categories (max 3)</h3>
-        <div className="category-options">
+        <div className="category__options">
           {categoryOptions.map((option) => (
             <label key={option}>
               <input type="checkbox" value={option} checked={categories.includes(option)} onChange={handleCategoryChange} disabled={categories.length >= 3 && !categories.includes(option)} />
