@@ -8,6 +8,8 @@ import UserIcon from "./icons/UserIcon";
 import LogoutIcon from "./icons/LogoutIcon";
 import SearchIcon from "./icons/SearchIcon";
 import { MdContactPhone } from "react-icons/md";
+import { RiLoginCircleFill } from "react-icons/ri";
+import { IoIosPersonAdd } from "react-icons/io";
 import AdminIcon from "./icons/AdminIcon";
 
 const Header = () => {
@@ -91,9 +93,11 @@ const Header = () => {
           {!isMobile && !username && (
             <>
               <Link className="nav-link" to="/login">
+                <RiLoginCircleFill />
                 Login
               </Link>
               <Link className="nav-link" to="/register">
+                <IoIosPersonAdd />
                 Register
               </Link>
             </>
