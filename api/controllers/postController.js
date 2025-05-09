@@ -1,4 +1,3 @@
-import fs from "fs";
 import Post from "../models/Post.js";
 import jwt from "jsonwebtoken";
 import { deleteFromS3, uploadToS3 } from "../config/s3Service.js";
@@ -7,23 +6,12 @@ const secretKey = "jkhas!kd87&*2e#gjshghjsgd";
 
 // Create Post
 export const AddPost = async (req, res) => {
-  const { originalname, path } = req.file;
-  const parts = originalname.split(".");
-  const ext = parts[parts.length - 1];
+  const { buffer, originalname } = req.file; // Get file buffer directly
+  const ext = originalname.split(".").pop();
   const newFileName = `${Date.now()}.${ext}`;
 
-  // Upload to S3
-  const s3Url = await uploadToS3(path, newFileName);
-
-  // Delete the local file
-  fs.unlinkSync(path);
-
-  // Create new path with forward slashes
-  const newPath = path + "." + ext;
-  const normalizedPath = newPath.replace(/\\/g, "/");
-
-  // Rename the file first
-  fs.renameSync(path, newPath);
+  // Upload buffer directly to S3
+  const s3Url = await uploadToS3(buffer, newFileName);
 
   const { token } = req.cookies;
   jwt.verify(token, secretKey, {}, async (err, info) => {
@@ -71,15 +59,12 @@ export const getPost = async (req, res) => {
 export const modifyPost = async (req, res) => {
   let s3Url = null;
   if (req.file) {
-    const { originalname, path } = req.file;
-    const parts = originalname.split(".");
-    const ext = parts[parts.length - 1];
+    const { buffer, originalname } = req.file; // Get buffer directly
+    const ext = originalname.split(".").pop();
+    const newFileName = `${Date.now()}.${ext}`;
 
-    // Upload new file to S3
-    s3Url = await uploadToS3(path, newFileName);
-
-    // Delete the local file
-    fs.unlinkSync(path);
+    // Upload buffer directly to S3
+    s3Url = await uploadToS3(buffer, newFileName);
   }
 
   const { token } = req.cookies;
@@ -91,7 +76,7 @@ export const modifyPost = async (req, res) => {
     const isAdmin = info.isAdmin;
     const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(info.id);
     if (!isAdmin && !isAuthor) {
-      return res.status(400).json("You are not the author!");
+      return res.status(403).json("You are not authorized to edit this post");
     }
     // Delete old file from S3 if updating with new file
     if (req.file && postDoc.cover) {

@@ -1,6 +1,5 @@
-import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
-import fs from "fs";
 
 // Configure S3 client
 const s3 = new S3Client({
@@ -12,16 +11,14 @@ const s3 = new S3Client({
 });
 
 // Upload file to S3
-export const uploadToS3 = async (filePath, fileName) => {
-  const fileStream = fs.createReadStream(filePath);
-
+export const uploadToS3 = async (fileBuffer, fileName) => {
   try {
     const upload = new Upload({
       client: s3,
       params: {
         Bucket: process.env.AWS_S3_BUCKET,
         Key: fileName,
-        Body: fileStream,
+        Body: fileBuffer, // Use buffer directly
       },
     });
 

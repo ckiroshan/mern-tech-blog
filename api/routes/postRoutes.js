@@ -3,7 +3,7 @@ import { AddPost, getAllPosts, getPendingPosts, getPost, getUserPosts, moderateP
 import multer from "multer";
 import { isAdmin } from "../controllers/authController.js";
 
-const uploadMiddleware = multer({ dest: "uploads/" });
+const uploadMiddleware = multer();
 
 const router = express.Router();
 
