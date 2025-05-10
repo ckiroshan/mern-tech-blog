@@ -227,9 +227,9 @@ This project uses **Swagger UI** for interactive API documentation, automaticall
 |:----------------------------------------------------:|:----------------------------------------------------------:| 
 | *My Profile (User information & User posts)*         | *Create Post Editor (Input fields + React Quill Editor)*   | 
 
-| ![Post Editor](/public/screenshots/Home-Mobile.jpg)  | ![Mobile View](/public/screenshots/MyProfile-Mobile.jpg)   | ![Mobile View](/public/screenshots/CreatePost-Mobile.jpg)    | 
+| ![Post Editor](/public/screenshots/Home-Mobile.jpg)  | ![Mobile View](/public/screenshots/MyProfile-Mobile.jpg)   | ![Mobile View](/public/screenshots/CreatePost-Mobile.jpg)   | 
 |:----------------------------------------------------:|:----------------------------------------------------------:| :----------------------------------------------------------:|
-| *Homepage (Mobile view)*                             | *Responsive Design*                                        | *Responsive Design* |  
+| *Homepage (Mobile view)*                             | *My Profile (Mobile view)*                                 | *Create Post (Mobile view)* |  
 
 
 ## **📜 Contribution**  
