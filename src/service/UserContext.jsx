@@ -1,16 +1,19 @@
 import { createContext, useState, useEffect } from "react";
 
+// New context to manage user data
 export const UserContext = createContext({});
 
 export function UserContextProvider({ children }) {
   const [userInfo, setUserInfo] = useState(() => {
-    // Initialize from localStorage if available
+    // Initialize userInfo state from localStorage if available
     const storedUser = typeof window !== "undefined" ? localStorage.getItem("userInfo") : null;
     return storedUser ? JSON.parse(storedUser) : {};
   });
+
+  // Search query state (shared across components)
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Persist to localStorage whenever userInfo changes
+  // Sync userInfo to localStorage whenever it changes
   useEffect(() => {
     if (typeof window !== "undefined") {
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
@@ -18,6 +21,7 @@ export function UserContextProvider({ children }) {
   }, [userInfo]);
 
   return (
+    // Pass user userInfo & search query state to all child components
     <UserContext.Provider
       value={{
         userInfo,
