@@ -1,5 +1,6 @@
 const API_URL = "http://localhost:8021/api";
 
+// User =============>
 export async function createUser(user) {
   const response = await fetch(`${API_URL}/auth/register`, {
     method: "POST",
