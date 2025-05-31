@@ -6,15 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter
-      // Enable React Router v7 future flags to:
-      future={{
-        v7_startTransition: true,
-        // startTransition for smoother navigation
-        v7_relativeSplatPath: true,
-        // Adopt new relative splat path behavior
-      }}
-    >
+    <BrowserRouter>
       <App />
     </BrowserRouter>
   </React.StrictMode>
