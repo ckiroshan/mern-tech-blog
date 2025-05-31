@@ -16,8 +16,10 @@ import "./App.css";
 
 export default function App() {
   return (
+    // Provide global User-context to entire App
     <UserContextProvider>
       <Routes>
+        {/* Root route using a shared layout */}
         <Route path={"/"} element={<Layout />}>
           {/* Public routes */}
           <Route index element={<Home />} />
@@ -38,7 +40,7 @@ export default function App() {
             }
           />
 
-          {/* Auth User only routes */}
+          {/* Authenticated User only routes */}
           <Route path="/add-post" element={
               <ProtectedRoute>
                 <CreatePost />
@@ -57,6 +59,7 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+
           {/* Admin only routes */}
           <Route path="/user/admin" element={
               <ProtectedRoute>
