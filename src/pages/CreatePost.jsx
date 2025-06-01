@@ -5,16 +5,19 @@ import Editor from "./Editor";
 import "react-quill/dist/quill.snow.css";
 
 const CreatePost = () => {
+  // Use-State variables: title, summary, content, file, category
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState("");
-  const [redirect, setRedirect] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [error, setError] = useState("");
+  const [redirect, setRedirect] = useState(false); // To redirect after post creation
+  const [error, setError] = useState("");         // To show error when image file is invalid
 
+  // Predefined category options
   const categoryOptions = ["AI", "Cybersecurity", "IoT", "Space Tech", "Ethical Hacking", "Cryptography", "Software Development", "Web Development", "Programming", "Frameworks", "Databases", "Version Control"];
 
+  // Handle category checkbox changes
   const handleCategoryChange = (e) => {
     const value = e.target.value;
     if (e.target.checked) {
@@ -24,6 +27,7 @@ const CreatePost = () => {
     }
   };
 
+  // Validate uploaded image
   const validateImage = (file) => {
     // Check file type
     const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
@@ -42,6 +46,7 @@ const CreatePost = () => {
     return true;
   };
 
+  // Handle image file input change
   const handleFileChange = (e) => {
     setError("");
     const file = e.target.files[0];
@@ -59,12 +64,14 @@ const CreatePost = () => {
     }
   };
 
+  // Submit form & create post
   async function handleFormSubmit(e) {
     e.preventDefault();
     // Validate image if present
     if (files && files[0] && !validateImage(files[0])) {
       return;
     }
+    // Prepare data using FormData for file upload support
     const data = new FormData();
     data.append("title", title);
     data.append("summary", summary);
@@ -76,21 +83,27 @@ const CreatePost = () => {
     console.log(files);
     const response = await addPost(data);
     if (response.ok) {
-      setRedirect(true);
+      setRedirect(true); // Trigger redirect after successful submission
     }
   }
+
+  // Redirect to post page after update
   if (redirect) return <Navigate to={"/"} />;
   return (
     <form onSubmit={handleFormSubmit} className="post__form">
       <h1 className="post__heading">Add new post</h1>
+      {/* Title input */}
       <input type="text" className="post__input" placeholder={"Title"} value={title} onChange={(e) => setTitle(e.target.value)} />
+      {/* Summary input */}
       <input type="summary" className="post__input" placeholder={"Summary"} value={summary} onChange={(e) => setSummary(e.target.value)} />
+      {/* File input with validation */}
       <input type="file" className="post__input" onChange={handleFileChange} accept=".jpg,.jpeg,.png,.webp" />
       {error && (
         <div className="errorMessage" style={{ color: "red", marginBottom: "10px" }}>
           {error}
         </div>
       )}
+      {/* Category selection (max 3) */}
       <div className="category__selection">
         <h3>Select Categories (max 3)</h3>
         <div className="category__options">
@@ -102,7 +115,9 @@ const CreatePost = () => {
           ))}
         </div>
       </div>
+      {/* ReactQuill Rich text editor for post content */}
       <Editor onChange={setContent} value={content} />
+      {/* Submit button */}
       <button className="form__button">Create Post</button>
     </form>
   );
