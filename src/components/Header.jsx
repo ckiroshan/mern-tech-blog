@@ -13,13 +13,16 @@ import { IoIosPersonAdd } from "react-icons/io";
 import AdminIcon from "./icons/AdminIcon";
 
 const Header = () => {
+  // Access & update user context
   const { userInfo, setUserInfo, searchQuery, setSearchQuery } = useContext(UserContext);
+  // Use-State variables: dropdownOpen, isMobile
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
 
   const location = useLocation();
   const isHomePage = location.pathname === "/";
 
+  // Track window resize for mobile view
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 800);
@@ -28,6 +31,7 @@ const Header = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Fetch user profile on load
   useEffect(() => {
     async function fetchProfile() {
       try {
@@ -42,6 +46,7 @@ const Header = () => {
     fetchProfile();
   }, []);
 
+  // Handle logout
   async function logout() {
     try {
       await logoutUser();
@@ -51,6 +56,7 @@ const Header = () => {
     }
   }
 
+  // Search handlers
   const handleSearch = (e) => {
     e.preventDefault();
     console.log("Searching for:", searchQuery);
@@ -70,6 +76,7 @@ const Header = () => {
         iRO-BiTS
       </Link>
       <nav>
+        {/* Show search bar only on homepage */}
         {isHomePage && (
           <form className="search-form" onSubmit={handleSearch}>
             <input type="text" placeholder="Search..." value={searchQuery} onChange={handleSearchChange} className="search-input" />
@@ -79,7 +86,7 @@ const Header = () => {
           </form>
         )}
         <div className="user-menu">
-          {/* Show hamburger menu on mobile, show normal nav on desktop */}
+          {/* Desktop view: nav-links */}
           {!isMobile && username && (
             <>
               <Link className="nav-link" to="/add-post">
@@ -103,12 +110,12 @@ const Header = () => {
             </>
           )}
 
-          {/* Always show hamburger button on mobile */}
+          {/* Mobile hamburger menu */}
           <button className="hamburger-btn" onClick={() => setDropdownOpen(!dropdownOpen)} aria-label="Menu">
             <HamburgerIcon />
           </button>
 
-          {/* Dropdown menu for mobile */}
+          {/* Mobile: dropdown menu */}
           {dropdownOpen && (
             <div className="dropdown">
               {/* For logged-in users on mobile */}
@@ -121,7 +128,7 @@ const Header = () => {
                 </>
               )}
 
-              {/* For logged-out users on mobile */}
+              {/* Mobile: For logged-out users */}
               {isMobile && !username && (
                 <>
                   <Link className="dropdown-item" to="/login" onClick={() => setDropdownOpen(false)}>
@@ -133,7 +140,7 @@ const Header = () => {
                 </>
               )}
 
-              {/* For logged-in users (all devices) */}
+              {/* All devices: For logged-in users */}
               {username && (
                 <>
                   {/* Admin Dashboard (Admin only) */}
@@ -158,6 +165,7 @@ const Header = () => {
                 <MdContactPhone />
                 <span>Contact Us</span>
               </Link>
+              {/* Logout link */}
               {username && (
                 <div className="dropdown-item" onClick={logout}>
                   <LogoutIcon />
