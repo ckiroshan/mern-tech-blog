@@ -1,12 +1,14 @@
+// Reusable pagination component
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+  // Generates list of page numbers to display, including ellipsis
   const getPageNumbers = () => {
     const pageNumbers = [];
-    const maxVisiblePages = 2; // Number of pages to show around current page
+    const maxVisiblePages = 2; // Number of pages to show before/after current page
 
-    // Always show first page
+    // Always include the first page
     pageNumbers.push(1);
 
-    // Show ellipsis if current page is far from start
+    // Add ellipsis if there's a gap between first page & nearby pages
     if (currentPage > maxVisiblePages + 1) {
       pageNumbers.push("...");
     }
@@ -22,12 +24,12 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       }
     }
 
-    // Show ellipsis if current page is far from end
+    // Add ellipsis if there's a gap before the last page
     if (currentPage < totalPages - maxVisiblePages) {
       pageNumbers.push("...");
     }
 
-    // Always show last page if there's more than 1 page
+    // Always include the last page if there’s more than one
     if (totalPages > 1) {
       pageNumbers.push(totalPages);
     }
@@ -37,12 +39,14 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
   return (
     <div className="pagination">
+      {/* Previous button */}
       {currentPage > 1 && (
         <button onClick={() => onPageChange(currentPage - 1)} className="pagination-button">
           &laquo; Prev
         </button>
       )}
 
+      {/* Page numbers & ellipsis */}
       {getPageNumbers().map((number, index) =>
         number === "..." ? (
           <span key={`ellipsis-${index}`} className="pagination-ellipsis">
@@ -55,6 +59,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         )
       )}
 
+      {/* Next button */}
       {currentPage < totalPages && (
         <button onClick={() => onPageChange(currentPage + 1)} className="pagination-button">
           Next &raquo;
