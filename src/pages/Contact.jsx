@@ -3,12 +3,15 @@ import { useState } from "react";
 import emailjs from "@emailjs/browser";
 
 const Contact = () => {
+  // Initialize form with react-hook-form
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm();
+
+  // Track submission state & alert display
   const [disabled, setDisabled] = useState(false);
   const [alertInfo, setAlertInfo] = useState({
     display: false,
@@ -16,6 +19,7 @@ const Contact = () => {
     type: "",
   });
 
+  // Display success or error message for 5 seconds
   const toggleAlert = (message, type) => {
     setAlertInfo({ display: true, message, type });
     setTimeout(() => {
@@ -23,10 +27,11 @@ const Contact = () => {
     }, 5000);
   };
 
+  // Handle form submission
   const onSubmit = async (data) => {
     const { name, email, subject, message } = data;
     try {
-      setDisabled(true);
+      setDisabled(true); // Disable form while sending email
 
       const templateParams = {
         name,
@@ -35,6 +40,7 @@ const Contact = () => {
         message,
       };
 
+      // Send email via EmailJS
       await emailjs.send(import.meta.env.VITE_SERVICE_ID, import.meta.env.VITE_TEMPLATE_ID, templateParams, import.meta.env.VITE_PUBLIC_KEY);
 
       toggleAlert("Form submission was successful!", "success");
@@ -42,8 +48,8 @@ const Contact = () => {
       console.error(e);
       toggleAlert("Uh oh. Something went wrong.", "danger");
     } finally {
-      setDisabled(false);
-      reset();
+      setDisabled(false); // Re-enable form
+      reset();           // Reset form fields
     }
   };
   return (
@@ -51,12 +57,13 @@ const Contact = () => {
       <div className="contact__Form">
         <h1 className="post__heading">Contact Us</h1>
         <p className="contact-text">If you gave any queries regarding this site, feel free to submit this form.</p>
+
+        {/* Contact Form */}
         <form id="contact-form" className="form" onSubmit={handleSubmit(onSubmit)} noValidate>
           <h1 className="post__heading">Contact Us</h1>
           <p className="contact-text">If you have any queries regarding this site, feel free to submit this form.</p>
-          <input
-            type="text"
-            name="name"
+          {/* Name input */}
+          <input type="text" name="name"
             {...register("name", {
               required: {
                 value: true,
@@ -71,9 +78,8 @@ const Contact = () => {
             placeholder="Name"
           ></input>
           {errors.name && <span className="errorMessage">{errors.name.message}</span>}
-          <input
-            type="email"
-            name="email"
+          {/* Email input */}
+          <input type="email" name="email"
             {...register("email", {
               required: true,
               pattern: /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
@@ -82,9 +88,8 @@ const Contact = () => {
             placeholder="Email address"
           ></input>
           {errors.email && <span className="errorMessage">Please enter a valid email address</span>}
-          <input
-            type="text"
-            name="subject"
+          {/* Subject input */}
+          <input type="text" name="subject"
             {...register("subject", {
               required: {
                 value: true,
@@ -99,9 +104,8 @@ const Contact = () => {
             placeholder="Subject"
           ></input>
           {errors.subject && <span className="errorMessage">{errors.subject.message}</span>}
-          <textarea
-            rows={3}
-            name="message"
+          {/* Message textarea */}
+          <textarea rows={3} name="message"
             {...register("message", {
               required: true,
             })}
@@ -109,11 +113,14 @@ const Contact = () => {
             placeholder="Message"
           ></textarea>
           {errors.message && <span className="errorMessage">Please enter a message</span>}
+          {/* Submit button */}
           <button className="form__button" disabled={disabled} type="submit">
             Submit
           </button>
         </form>
       </div>
+
+      {/* Alert message box */}
       {alertInfo.display && (
         <div className={`alert alert-${alertInfo.type} alert-dismissible mt-5`} role="alert">
           {alertInfo.message}
