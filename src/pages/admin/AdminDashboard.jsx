@@ -11,8 +11,11 @@ import ApprovedPostsTable from "./components/ApprovedPostsTable";
 import "./AdminDashboard.css";
 
 const AdminDashboard = () => {
+  // Access & update user context
   const { userInfo } = useContext(UserContext);
+  // Hook to access navigation
   const navigate = useNavigate();
+  // Use-State variables: stats, users, pending-posts, all-posts, loading state
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalPosts: 0,
@@ -23,7 +26,7 @@ const AdminDashboard = () => {
   const [allPosts, setAllPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Redirect if not admin
+  // Redirect non-admin users
   useEffect(() => {
     if (!userInfo?.isAdmin) {
       navigate("/");
@@ -31,7 +34,7 @@ const AdminDashboard = () => {
     }
   }, [userInfo, navigate]);
 
-  // Data fetching handler
+  // Load Admin-dashboard data
   const loadData = useCallback(async () => {
     try {
       setLoading(true);
@@ -48,12 +51,12 @@ const AdminDashboard = () => {
     }
   }, []);
 
-  // Load data on component mount
+  // Fetch data on component mount
   useEffect(() => {
     loadData();
   }, [loadData]);
 
-  // Post approval handler
+  // Approve a post
   const handleApprovePost = useCallback(async (postId) => {
     try {
       await approvePost(postId);
@@ -68,7 +71,7 @@ const AdminDashboard = () => {
     }
   }, []);
 
-  // Post deletion handler
+  // Delete a post
   const handleDeletePost = useCallback(
     async (postId) => {
       try {
@@ -89,7 +92,7 @@ const AdminDashboard = () => {
     [pendingPosts]
   );
 
-  // User deletion handler
+  // Delete a user
   const handleDeleteUser = useCallback(async (userId) => {
     try {
       const response = await deleteUser(userId);
@@ -107,6 +110,7 @@ const AdminDashboard = () => {
     }
   }, []);
 
+  // Show loader while data is being fetched
   if (loading) {
     return <div className="admin-loading">Loading admin data...</div>;
   }
@@ -116,11 +120,11 @@ const AdminDashboard = () => {
       <h1>Admin Dashboard</h1>
       {/* Stats Cards */}
       <AdminStats stats={stats} />
-      {/* Pending Posts Table */}
+      {/* Table: Pending Posts */}
       <PendingPostsTable posts={pendingPosts} onApprove={handleApprovePost} onDelete={handleDeletePost} />
-      {/* All Users Table */}
+      {/* Table: All Users */}
       <UsersTable users={users} onDelete={handleDeleteUser} />
-      {/* Approved Posts Table */}
+      {/* Table: Approved Posts */}
       <ApprovedPostsTable posts={allPosts} onApprove={handleApprovePost} onDelete={handleDeletePost} />
     </div>
   );
